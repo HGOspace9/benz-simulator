@@ -1,59 +1,83 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>あそこにベンツがシュミレーター｜タバコ代でベンツが買えたかも診断</title>
-<meta name="description" content="1日に吸う本数と喫煙年数を入力するだけで、タバコに使った総額と『同じお金で買えたもの』をベンツ換算で診断します。禁煙のきっかけにどうぞ。">
-<meta name="robots" content="index, follow">
-<!-- web-design-guidelines: ダーク/ライト両対応をブラウザのネイティブUI(フォームコントロール・スクロールバー等)にも伝える -->
-<meta name="color-scheme" content="light dark">
-<link rel="canonical" href="https://hgospace9.github.io/benz-simulator/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>あそこにベンツがシュミレーター｜タバコ代でベンツが買えたかも診断</title>
+  <meta name="description" content="1日に吸う本数と喫煙年数を入力するだけで、タバコに使った総額と『同じお金で買えたもの』をベンツ換算で診断します。禁煙のきっかけにどうぞ。">
+  <meta name="robots" content="index, follow">
+  <!-- web-design-guidelines: ダーク/ライト両対応をブラウザのネイティブUI(フォームコントロール・スクロールバー等)にも伝える -->
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://hgospace9.github.io/benz-simulator/">
 
-<!-- OGP / SNSシェア用タグ(公開URLが決まったら og:url と og:image を実際の値に差し替えてください) -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="あそこにベンツがシュミレーター">
-<meta property="og:description" content="タバコ代、実はベンツが買えたかもしれません。本数と年数を入れるだけの診断シミュレーターです。">
-<meta property="og:url" content="https://hgospace9.github.io/benz-simulator/">
-<meta property="og:locale" content="ja_JP">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="あそこにベンツがシュミレーター">
-<meta name="twitter:description" content="タバコ代、実はベンツが買えたかもしれません。">
+  <!-- OGP / SNSシェア用タグ(公開URLが決まったら og:url と og:image を実際の値に差し替えてください) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="あそこにベンツがシュミレーター">
+  <meta property="og:description" content="タバコ代、実はベンツが買えたかもしれません。本数と年数を入れるだけの診断シミュレーターです。">
+  <meta property="og:url" content="https://hgospace9.github.io/benz-simulator/">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="あそこにベンツがシュミレーター">
+  <meta name="twitter:description" content="タバコ代、実はベンツが買えたかもしれません。">
 
-<!-- screenshot-to-code: 16personalities.com(柔らかい診断サイト)と脳内メーカー/うそこメーカー
+  <!-- screenshot-to-code: 16personalities.com(柔らかい診断サイト)と脳内メーカー/うそこメーカー
      (気取らない賑やかなネタ診断サイト)を参考に、丸ゴシック系の遊び心あるフォントを採用。
      SaaS的な整いすぎたデザインから、Web玩具/診断コンテンツらしいカジュアルさへ寄せる -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Zen+Maru+Gothic:wght@400;500;700&display=swap"
+    rel="stylesheet">
 
-<style>
-  /* ============ デザイントークン(ライト/ダーク両対応) ============ */
-  /* awesome-design参照(Laws of UX: von Restorff Effect — 最重要指標を際立たせる)。
+  <style>
+    /* ============ デザイントークン(ライト/ダーク両対応) ============ */
+    /* awesome-design参照(Laws of UX: von Restorff Effect — 最重要指標を際立たせる)。
      --dangerを総額表示に採用するにあたり、WCAG AAのコントラスト比(4.5:1)を計算で確認済み:
      ライト時 背景#fff × 文字#b3432b ≈ 5.6:1 / ダーク時 背景#201f1c × 文字#e3856b ≈ 6.2:1
      (白文字×--danger背景のバッジも同じ2色の組み合わせなので同じ比率で合格) */
-  :root {
-    --page-1: #eafff2;
-    --page-2: #fffbe8;
-    --page-3: #ffeef0;
-    --surface: #ffffff;
-    --surface-2: #f5f3e8;
-    --ink: #2b2620;
-    --ink-2: #5c554a;
-    --muted: #948c7d;
-    --border: #2b2620;
-    --accent: #0f6b4f;      /* ベンツらしい深緑 */
-    --accent-soft: #d8f5e6;
-    --accent-ink: #ffffff;
-    --danger: #b3432b;
-    --sun: #ffc93c;
-    --track: #f0ede0;
-    --shadow-pop: 5px 5px 0 var(--border);
-    --shadow-pop-sm: 3px 3px 0 var(--border);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
+    :root {
+      --page-1: #eafff2;
+      --page-2: #fffbe8;
+      --page-3: #ffeef0;
+      --surface: #ffffff;
+      --surface-2: #f5f3e8;
+      --ink: #2b2620;
+      --ink-2: #5c554a;
+      --muted: #948c7d;
+      --border: #2b2620;
+      --accent: #0f6b4f;
+      /* ベンツらしい深緑 */
+      --accent-soft: #d8f5e6;
+      --accent-ink: #ffffff;
+      --danger: #b3432b;
+      --sun: #ffc93c;
+      --track: #f0ede0;
+      --shadow-pop: 5px 5px 0 var(--border);
+      --shadow-pop-sm: 3px 3px 0 var(--border);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --page-1: #14231c;
+        --page-2: #201d14;
+        --page-3: #241417;
+        --surface: #211f1a;
+        --surface-2: #2a2720;
+        --ink: #f3f1ec;
+        --ink-2: #cbc6bd;
+        --muted: #948c7d;
+        --border: #f3f1ec;
+        --accent: #34c98d;
+        --accent-soft: #143526;
+        --accent-ink: #10201a;
+        --danger: #e3856b;
+        --sun: #ffd873;
+        --track: #35322a;
+      }
+    }
+
+    :root[data-theme="dark"] {
       --page-1: #14231c;
       --page-2: #201d14;
       --page-3: #241417;
@@ -70,377 +94,430 @@
       --sun: #ffd873;
       --track: #35322a;
     }
-  }
-  :root[data-theme="dark"] {
-    --page-1: #14231c;
-    --page-2: #201d14;
-    --page-3: #241417;
-    --surface: #211f1a;
-    --surface-2: #2a2720;
-    --ink: #f3f1ec;
-    --ink-2: #cbc6bd;
-    --muted: #948c7d;
-    --border: #f3f1ec;
-    --accent: #34c98d;
-    --accent-soft: #143526;
-    --accent-ink: #10201a;
-    --danger: #e3856b;
-    --sun: #ffd873;
-    --track: #35322a;
-  }
 
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    background: linear-gradient(160deg, var(--page-1) 0%, var(--page-2) 55%, var(--page-3) 100%);
-    background-attachment: fixed;
-    color: var(--ink);
-    font-family: "Zen Maru Gothic", system-ui, -apple-system, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
-  .wrap {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 32px 20px 96px;
-  }
-
-  /* ============ ヘッダー ============ */
-  /* taste-skill: 中央揃え一辺倒(ANTI-CENTER BIAS)を避け、左詰め+マスコット絵文字で非対称に構成 */
-  header.hero {
-    text-align: left;
-    padding: 12px 0 8px;
-    position: relative;
-  }
-  .mascot {
-    font-size: 34px;
-    margin-bottom: 6px;
-    display: block;
-  }
-  .kicker {
-    display: inline-block;
-    font-family: "Zen Maru Gothic", sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: var(--ink);
-    background: var(--sun);
-    border: 2px solid var(--border);
-    border-radius: 999px;
-    padding: 3px 12px;
-    transform: rotate(-3deg);
-    margin-bottom: 10px;
-  }
-  header.hero h1 {
-    font-family: "Kiwi Maru", "Zen Maru Gothic", sans-serif;
-    font-weight: 500;
-    font-size: clamp(28px, 7vw, 40px);
-    line-height: 1.35;
-    margin: 4px 0 10px;
-    letter-spacing: -0.01em;
-    text-wrap: balance; /* web-design-guidelines: 見出しの改行位置を美しく揃える */
-  }
-  header.hero p.lead {
-    color: var(--ink-2);
-    margin: 0;
-    font-size: 15px;
-    max-width: 46ch;
-  }
-  .theme-toggle {
-    position: fixed;
-    top: 16px;
-    right: 16px;
-    z-index: 10;
-    border: 2px solid var(--border);
-    background: var(--surface);
-    color: var(--ink);
-    border-radius: 999px;
-    padding: 8px 14px;
-    font-size: 13px;
-    font-family: inherit;
-    font-weight: 500;
-    cursor: pointer;
-    box-shadow: var(--shadow-pop-sm);
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
-    touch-action: manipulation; /* web-design-guidelines: モバイルでのダブルタップズーム遅延を防ぐ */
-  }
-  /* taste-skill Rule 5 + Web玩具の「スタンプが沈む」感触: 影を潰して押下フィードバックを表現 */
-  .theme-toggle:active {
-    transform: translate(3px, 3px);
-    box-shadow: 0 0 0 var(--border);
-  }
-  /* web-design-guidelines: prefers-reduced-motionを尊重し、アニメーションを最小化する */
-  @media (prefers-reduced-motion: reduce) {
-    .theme-toggle,
-    .share-btn,
-    .progress-fill {
-      transition: none !important;
+    * {
+      box-sizing: border-box;
     }
-  }
-  .theme-toggle:focus-visible,
-  button:focus-visible,
-  input:focus-visible {
-    outline: 3px solid var(--accent);
-    outline-offset: 2px;
-  }
 
-  /* ============ カード共通(コミック風の太い輪郭+オフセット影) ============ */
-  .card {
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: 20px;
-    padding: 22px;
-    box-shadow: var(--shadow-pop);
-    margin-top: 22px;
-  }
-  .card h2 {
-    font-family: "Kiwi Maru", sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-    margin: 0 0 16px;
-    color: var(--ink);
-  }
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
 
-  /* ============ 入力フォーム ============ */
-  .field { margin-bottom: 18px; }
-  .field:last-child { margin-bottom: 0; }
-  .field label {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    font-size: 13px;
-    color: var(--ink-2);
-    margin-bottom: 6px;
-  }
-  .field label .val {
-    font-variant-numeric: tabular-nums;
-    color: var(--accent);
-    font-weight: 700;
-    font-size: 15px;
-  }
-  .field input[type="number"] {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 12px;
-    border: 2px solid var(--border);
-    background: var(--surface-2);
-    color: var(--ink);
-    font-size: 16px;
-    font-family: inherit;
-    font-variant-numeric: tabular-nums;
-  }
-  .field input[type="range"] {
-    width: 100%;
-    accent-color: var(--accent);
-    touch-action: manipulation;
-  }
-  /* taste-skill Rule 5/6: Error States — 入力欄直下にインラインでエラー表示 */
-  .field .error-text {
-    display: none;
-    color: var(--danger);
-    font-size: 12px;
-    font-weight: 700;
-    margin-top: 6px;
-  }
-  .field.has-error input[type="number"] {
-    border-color: var(--danger);
-  }
-  .field.has-error .error-text {
-    display: block;
-  }
+    body {
+      background: linear-gradient(160deg, var(--page-1) 0%, var(--page-2) 55%, var(--page-3) 100%);
+      background-attachment: fixed;
+      color: var(--ink);
+      font-family: "Zen Maru Gothic", system-ui, -apple-system, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  /* ============ 結果表示(診断結果チケット風) ============ */
-  /* screenshot-to-code: 脳内メーカー系サイトの「結果カード」らしさを、破線区切り+絵文字装飾で表現 */
-  .result-total {
-    text-align: center;
-    position: relative;
-    background: var(--accent-soft);
-  }
-  .result-total .caption {
-    color: var(--ink-2);
-    font-size: 14px;
-    margin: 0;
-  }
-  .result-total .sparkle {
-    font-size: 20px;
-  }
-  .result-total .amount {
-    font-family: "Kiwi Maru", sans-serif;
-    font-weight: 500;
-    font-size: clamp(38px, 12vw, 58px);
-    letter-spacing: -0.01em;
-    font-variant-numeric: tabular-nums;
-    margin: 8px 0 4px;
-    color: var(--danger);
-  }
-  .result-total .sub {
-    color: var(--muted);
-    font-size: 13px;
-    padding-bottom: 16px;
-    border-bottom: 2px dashed var(--border);
-    margin: 0 0 14px;
-  }
-  /* web-design-guidelines: URLへの状態反映+シェア導線 */
-  .share-btn {
-    border: 2px solid var(--border);
-    background: var(--sun);
-    color: var(--ink);
-    border-radius: 999px;
-    padding: 10px 20px;
-    font-size: 14px;
-    font-family: inherit;
-    font-weight: 700;
-    cursor: pointer;
-    touch-action: manipulation;
-    box-shadow: var(--shadow-pop-sm);
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
-  }
-  .share-btn:active {
-    transform: translate(3px, 3px);
-    box-shadow: 0 0 0 var(--border);
-  }
-  .share-feedback {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--accent);
-    min-height: 1.6em;
-    margin: 8px 0 0;
-  }
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 20px 96px;
+    }
 
-  /* ============ ベンツ進捗バー ============ */
-  .benz-block { text-align: center; }
-  .benz-count {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 14px;
-  }
-  .benz-count strong {
-    font-family: "Kiwi Maru", sans-serif;
-    color: var(--accent);
-    font-size: 28px;
-  }
-  .progress-track {
-    position: relative;
-    width: 100%;
-    height: 16px;
-    border-radius: 999px;
-    background: var(--track);
-    border: 2px solid var(--border);
-    overflow: visible;
-    margin: 28px 0 8px;
-  }
-  .progress-fill {
-    height: 100%;
-    border-radius: 999px;
-    background: var(--accent);
-    transition: width 0.4s ease;
-  }
-  .benz-note {
-    font-size: 12px;
-    color: var(--muted);
-  }
+    /* ============ ヘッダー ============ */
+    /* taste-skill: 中央揃え一辺倒(ANTI-CENTER BIAS)を避け、左詰め+マスコット絵文字で非対称に構成 */
+    header.hero {
+      text-align: left;
+      padding: 12px 0 8px;
+      position: relative;
+    }
 
-  /* ============ 等価アイテムリスト(散らばったステッカー風) ============ */
-  .item-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 14px;
-    padding-top: 4px;
-  }
-  .item-card {
-    border: 2px solid var(--border);
-    background: var(--surface-2);
-    border-radius: 14px;
-    padding: 14px;
-    box-shadow: var(--shadow-pop-sm);
-  }
-  /* screenshot-to-code: 整列しすぎたグリッドを避け、カードごとにわずかな傾きでネタサイトらしさを出す */
-  .item-card:nth-child(3n+1) { transform: rotate(-1.5deg); }
-  .item-card:nth-child(3n+2) { transform: rotate(1deg); }
-  .item-card:nth-child(3n+3) { transform: rotate(-0.5deg); }
-  .item-card .item-count {
-    font-family: "Kiwi Maru", sans-serif;
-    font-size: 22px;
-    color: var(--accent);
-    font-variant-numeric: tabular-nums;
-  }
-  .item-card .item-name {
-    font-size: 13px;
-    color: var(--ink-2);
-    margin-top: 2px;
-    overflow: hidden;
-    text-overflow: ellipsis; /* web-design-guidelines: 長いテキストの切り詰め */
-    white-space: nowrap;
-  }
-  .item-card .item-price {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 6px;
-  }
-  .item-empty {
-    color: var(--muted);
-    font-size: 14px;
-    text-align: center;
-    padding: 8px 0;
-  }
+    .mascot {
+      font-size: 34px;
+      margin-bottom: 6px;
+      display: block;
+    }
 
-  /* ============ 広告枠 ============ */
-  .ad-slot {
-    margin: 24px 0;
-    text-align: center;
-  }
-  .ad-slot__placeholder {
-    border: 2px dashed var(--border);
-    border-radius: 14px;
-    padding: 18px;
-    color: var(--muted);
-    font-size: 12px;
-    background: var(--surface);
-  }
+    .kicker {
+      display: inline-block;
+      font-family: "Zen Maru Gothic", sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      background: var(--sun);
+      border: 2px solid var(--border);
+      border-radius: 999px;
+      padding: 3px 12px;
+      transform: rotate(-3deg);
+      margin-bottom: 10px;
+    }
 
-  /* ============ 免責・フッター ============ */
-  .disclaimer {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.8;
-  }
-  .disclaimer p { margin: 0 0 8px; }
-  .disclaimer p:last-child { margin-bottom: 0; }
-  footer {
-    text-align: center;
-    color: var(--muted);
-    font-size: 12px;
-    margin-top: 32px;
-  }
+    header.hero h1 {
+      font-family: "Kiwi Maru", "Zen Maru Gothic", sans-serif;
+      font-weight: 700;
+      font-size: clamp(40px, 13vw, 72px);
+      line-height: 1.2;
+      margin: 8px 0 12px;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
+      /* web-design-guidelines: 見出しの改行位置を美しく揃える */
+    }
 
-  .pill-badge {
-    display: inline-block;
-    background: var(--sun);
-    border: 2px solid var(--border);
-    color: var(--ink);
-    border-radius: 999px;
-    padding: 2px 10px;
-    font-size: 11px;
-    font-weight: 700;
-    margin-left: 6px;
-  }
-</style>
+    header.hero p.lead {
+      color: var(--ink-2);
+      margin: 0;
+      font-size: 15px;
+      max-width: 46ch;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 10;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-family: inherit;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: var(--shadow-pop-sm);
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      touch-action: manipulation;
+      /* web-design-guidelines: モバイルでのダブルタップズーム遅延を防ぐ */
+    }
+
+    /* taste-skill Rule 5 + Web玩具の「スタンプが沈む」感触: 影を潰して押下フィードバックを表現 */
+    .theme-toggle:active {
+      transform: translate(3px, 3px);
+      box-shadow: 0 0 0 var(--border);
+    }
+
+    /* web-design-guidelines: prefers-reduced-motionを尊重し、アニメーションを最小化する */
+    @media (prefers-reduced-motion: reduce) {
+
+      .theme-toggle,
+      .share-btn,
+      .progress-fill {
+        transition: none !important;
+      }
+    }
+
+    .theme-toggle:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* ============ カード共通(コミック風の太い輪郭+オフセット影) ============ */
+    .card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: var(--shadow-pop);
+      margin-top: 22px;
+    }
+
+    .card h2 {
+      font-family: "Kiwi Maru", sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      margin: 0 0 16px;
+      color: var(--ink);
+    }
+
+    /* ============ 入力フォーム ============ */
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .field label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 13px;
+      color: var(--ink-2);
+      margin-bottom: 6px;
+    }
+
+    .field label .val {
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .field input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      background: var(--surface-2);
+      color: var(--ink);
+      font-size: 16px;
+      font-family: inherit;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .field input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+      touch-action: manipulation;
+    }
+
+    /* taste-skill Rule 5/6: Error States — 入力欄直下にインラインでエラー表示 */
+    .field .error-text {
+      display: none;
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .field.has-error input[type="number"] {
+      border-color: var(--danger);
+    }
+
+    .field.has-error .error-text {
+      display: block;
+    }
+
+    /* ============ 結果表示(診断結果チケット風) ============ */
+    /* screenshot-to-code: 脳内メーカー系サイトの「結果カード」らしさを、破線区切り+絵文字装飾で表現 */
+    .result-total {
+      text-align: center;
+      position: relative;
+      background: var(--accent-soft);
+    }
+
+    .result-total .caption {
+      color: var(--ink-2);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .result-total .sparkle {
+      font-size: 20px;
+    }
+
+    .result-total .amount {
+      font-family: "Kiwi Maru", sans-serif;
+      font-weight: 500;
+      font-size: clamp(38px, 12vw, 58px);
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+      margin: 8px 0 4px;
+      color: var(--danger);
+    }
+
+    .result-total .sub {
+      color: var(--muted);
+      font-size: 13px;
+      padding-bottom: 16px;
+      border-bottom: 2px dashed var(--border);
+      margin: 0 0 14px;
+    }
+
+    /* web-design-guidelines: URLへの状態反映+シェア導線 */
+    .share-btn {
+      border: 2px solid var(--border);
+      background: var(--sun);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      touch-action: manipulation;
+      box-shadow: var(--shadow-pop-sm);
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .share-btn:active {
+      transform: translate(3px, 3px);
+      box-shadow: 0 0 0 var(--border);
+    }
+
+    .share-feedback {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      min-height: 1.6em;
+      margin: 8px 0 0;
+    }
+
+    /* ============ ベンツ進捗バー ============ */
+    .benz-block {
+      text-align: center;
+    }
+
+    .benz-count {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+
+    .benz-count strong {
+      font-family: "Kiwi Maru", sans-serif;
+      color: var(--accent);
+      font-size: 28px;
+    }
+
+    .progress-track {
+      position: relative;
+      width: 100%;
+      height: 16px;
+      border-radius: 999px;
+      background: var(--track);
+      border: 2px solid var(--border);
+      overflow: visible;
+      margin: 28px 0 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--accent);
+      transition: width 0.4s ease;
+    }
+
+    .benz-note {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ============ 等価アイテムリスト(散らばったステッカー風) ============ */
+    .item-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 14px;
+      padding-top: 4px;
+    }
+
+    .item-card {
+      border: 2px solid var(--border);
+      background: var(--surface-2);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: var(--shadow-pop-sm);
+    }
+
+    /* screenshot-to-code: 整列しすぎたグリッドを避け、カードごとにわずかな傾きでネタサイトらしさを出す */
+    .item-card:nth-child(3n+1) {
+      transform: rotate(-1.5deg);
+    }
+
+    .item-card:nth-child(3n+2) {
+      transform: rotate(1deg);
+    }
+
+    .item-card:nth-child(3n+3) {
+      transform: rotate(-0.5deg);
+    }
+
+    .item-card .item-count {
+      font-family: "Kiwi Maru", sans-serif;
+      font-size: 22px;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .item-card .item-name {
+      font-size: 13px;
+      color: var(--ink-2);
+      margin-top: 2px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      /* web-design-guidelines: 長いテキストの切り詰め */
+      white-space: nowrap;
+    }
+
+    .item-card .item-price {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .item-empty {
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+      padding: 8px 0;
+    }
+
+    /* ============ 広告枠 ============ */
+    .ad-slot {
+      margin: 24px 0;
+      text-align: center;
+    }
+
+    .ad-slot__placeholder {
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      background: var(--surface);
+    }
+
+    /* ============ 免責・フッター ============ */
+    .disclaimer {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .disclaimer p {
+      margin: 0 0 8px;
+    }
+
+    .disclaimer p:last-child {
+      margin-bottom: 0;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 32px;
+    }
+
+    .pill-badge {
+      display: inline-block;
+      background: var(--sun);
+      border: 2px solid var(--border);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 2px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 6px;
+    }
+  </style>
 </head>
+
 <body>
 
-<button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">配色切替</button>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">配色切替</button>
 
-<div class="wrap">
+  <div class="wrap">
 
-  <header class="hero">
-    <span class="kicker">タバコ代 診断シミュレーター</span>
-    <h1>あそこにベンツが<br>シュミレーター</h1>
-    <p class="lead">タバコに費やしたお金、実はベンツが買えていたかもしれません。</p>
-  </header>
+    <header class="hero">
+      <span class="kicker">タバコ代マジやばい選手権</span>
+      <h1>あそこにベンツが<br>シュミレーター</h1>
+      <p class="lead">そのタバコ代、ガチでベンツ買えてたかもしれん。ヤバくない?とりま数字いれてみ。</p>
+    </header>
 
-  <!-- 広告枠①: ヘッダー下 -->
-  <div class="ad-slot">
-    <!--
+    <!-- 広告枠①: ヘッダー下 -->
+    <div class="ad-slot">
+      <!--
       Google AdSense 広告コード(ヘッダー下)
       審査通過後、下記コメントを解除して data-ad-client / data-ad-slot を
       実際のパブリッシャーID・広告ユニットIDに置き換えてください。
@@ -454,42 +531,43 @@
            data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     -->
-    <div class="ad-slot__placeholder">広告スペース（AdSense審査通過後に設置）</div>
-  </div>
-
-  <!-- ============ 入力フォーム ============ -->
-  <section class="card" aria-label="入力">
-    <h2>あなたの喫煙データを入力</h2>
-
-    <div class="field">
-      <label for="cigsPerDay">1日に吸う本数 <span class="val" id="cigsPerDayVal">20</span> 本</label>
-      <input type="range" id="cigsPerDay" name="cigsPerDay" min="1" max="60" value="20" step="1" autocomplete="off">
+      <div class="ad-slot__placeholder">広告スペース（AdSense審査通過後に設置）</div>
     </div>
 
-    <div class="field">
-      <label for="years">喫煙年数 <span class="val" id="yearsVal">10</span> 年</label>
-      <input type="range" id="years" name="years" min="1" max="50" value="10" step="1" autocomplete="off">
-    </div>
+    <!-- ============ 入力フォーム ============ -->
+    <section class="card" aria-label="入力">
+      <h2>とりあえず数字いれてみ</h2>
 
-    <div class="field" id="pricePerPackField">
-      <label for="pricePerPack">1箱(20本入り)の価格<span class="pill-badge">目安 ¥600</span></label>
-      <input type="number" id="pricePerPack" name="pricePerPack" min="0" max="2000" step="10" value="600" autocomplete="off" aria-describedby="pricePerPackError">
-      <p class="error-text" id="pricePerPackError">価格は1円以上を入力してください</p>
-    </div>
-  </section>
+      <div class="field">
+        <label for="cigsPerDay">1日何本吸う? <span class="val" id="cigsPerDayVal">20</span> 本</label>
+        <input type="range" id="cigsPerDay" name="cigsPerDay" min="1" max="60" value="20" step="1" autocomplete="off">
+      </div>
 
-  <!-- ============ 結果: 総額(診断チケット風) ============ -->
-  <section class="card result-total" aria-live="polite">
-    <p class="caption">これまでにタバコへ使った金額の目安</p>
-    <p class="amount" id="totalAmount">¥0</p>
-    <p class="sub" id="totalCigs">総本数: 0本</p>
-    <button class="share-btn" id="shareBtn" type="button">この結果のURLをコピー</button>
-    <p class="share-feedback" id="shareFeedback" aria-live="polite"></p>
-  </section>
+      <div class="field">
+        <label for="years">もう何年吸ってる? <span class="val" id="yearsVal">10</span> 年</label>
+        <input type="range" id="years" name="years" min="1" max="50" value="10" step="1" autocomplete="off">
+      </div>
 
-  <!-- 広告枠②: 結果直後 -->
-  <div class="ad-slot">
-    <!--
+      <div class="field" id="pricePerPackField">
+        <label for="pricePerPack">1箱いくらしてる?<span class="pill-badge">だいたい ¥600</span></label>
+        <input type="number" id="pricePerPack" name="pricePerPack" min="0" max="2000" step="10" value="600"
+          autocomplete="off" aria-describedby="pricePerPackError">
+        <p class="error-text" id="pricePerPackError">1円以上にしてくれ〜</p>
+      </div>
+    </section>
+
+    <!-- ============ 結果: 総額(診断チケット風) ============ -->
+    <section class="card result-total" aria-live="polite">
+      <p class="caption">今まで煙にして消えたお金がこちら</p>
+      <p class="amount" id="totalAmount">¥0</p>
+      <p class="sub" id="totalCigs">吸った本数: 0本</p>
+      <button class="share-btn" id="shareBtn" type="button">これ友達にも見せたる</button>
+      <p class="share-feedback" id="shareFeedback" aria-live="polite"></p>
+    </section>
+
+    <!-- 広告枠②: 結果直後 -->
+    <div class="ad-slot">
+      <!--
       Google AdSense 広告コード(結果表示直後)
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
       <ins class="adsbygoogle"
@@ -500,28 +578,28 @@
            data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     -->
-    <div class="ad-slot__placeholder">広告スペース（AdSense審査通過後に設置）</div>
-  </div>
-
-  <!-- ============ ベンツ進捗バー ============ -->
-  <section class="card benz-block" aria-label="ベンツ換算">
-    <h2 style="text-align:center">ベンツ換算</h2>
-    <p class="benz-count">ベンツ1台分のうち <strong id="benzPercent">0%</strong> 貯まりました</p>
-    <div class="progress-track">
-      <div class="progress-fill" id="benzProgress" style="width:0%"></div>
+      <div class="ad-slot__placeholder">広告スペース（AdSense審査通過後に設置）</div>
     </div>
-    <p class="benz-note">※メルセデス・ベンツAクラス 目安価格 ¥5,500,000 に対する割合で計算(実際の価格はグレード・時期により変動します)</p>
-  </section>
 
-  <!-- ============ 等価アイテムリスト ============ -->
-  <section class="card" aria-label="他の換算アイテム">
-    <h2>同じ金額で買えたかもしれないもの</h2>
-    <div class="item-grid" id="itemGrid"></div>
-  </section>
+    <!-- ============ ベンツ進捗バー ============ -->
+    <section class="card benz-block" aria-label="ベンツ換算">
+      <h2 style="text-align:center">ベンツどんだけ買えた?</h2>
+      <p class="benz-count">ベンツ1台のうち <strong id="benzPercent">0%</strong> ぶん吸っちゃった</p>
+      <div class="progress-track">
+        <div class="progress-fill" id="benzProgress" style="width:0%"></div>
+      </div>
+      <p class="benz-note">※メルセデス・ベンツAクラス だいたい¥5,500,000として計算(グレードとか時期でちょいちょい変わるから参考程度に)</p>
+    </section>
 
-  <!-- 広告枠③: フッター上 -->
-  <div class="ad-slot">
-    <!--
+    <!-- ============ 等価アイテムリスト ============ -->
+    <section class="card" aria-label="他の換算アイテム">
+      <h2>この金額あったら買えてたもの</h2>
+      <div class="item-grid" id="itemGrid"></div>
+    </section>
+
+    <!-- 広告枠③: フッター上 -->
+    <div class="ad-slot">
+      <!--
       Google AdSense 広告コード(フッター上)
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
       <ins class="adsbygoogle"
@@ -532,232 +610,233 @@
            data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     -->
-    <div class="ad-slot__placeholder">広告スペース（AdSense審査通過後に設置）</div>
+      <div class="ad-slot__placeholder">広告スペース（AdSense審査通過後に設置）</div>
+    </div>
+
+    <!-- ============ 免責事項 ============ -->
+    <section class="card disclaimer">
+      <p>※本サイトに表示される金額・商品価格はすべて目安であり、実際の価格を保証するものではありません。エンタメ・啓発目的の簡易シミュレーターです。</p>
+      <p>※喫煙は健康に影響を及ぼす可能性があります。禁煙をお考えの方は、医療機関や禁煙外来へのご相談をおすすめします。</p>
+    </section>
+
+    <footer>
+      <p>あそこにベンツがシュミレーター</p>
+    </footer>
+
   </div>
 
-  <!-- ============ 免責事項 ============ -->
-  <section class="card disclaimer">
-    <p>※本サイトに表示される金額・商品価格はすべて目安であり、実際の価格を保証するものではありません。エンタメ・啓発目的の簡易シミュレーターです。</p>
-    <p>※喫煙は健康に影響を及ぼす可能性があります。禁煙をお考えの方は、医療機関や禁煙外来へのご相談をおすすめします。</p>
-  </section>
+  <script>
+    (function () {
+      "use strict";
 
-  <footer>
-    <p>あそこにベンツがシュミレーター</p>
-  </footer>
+      // ============ 等価アイテムのマスターデータ(すべて目安価格・円) ============
+      var ITEMS = [
+        { name: "缶コーヒー", price: 130 },
+        { name: "コンビニのおにぎり", price: 150 },
+        { name: "缶ビール(500ml)", price: 250 },
+        { name: "スタバのコーヒー", price: 500 },
+        { name: "ラーメン一杯", price: 900 },
+        { name: "映画1本", price: 2000 },
+        { name: "焼肉食べ放題", price: 4000 },
+        { name: "国内旅行1泊2日", price: 30000 },
+        { name: "最新スマートフォン", price: 160000 },
+        { name: "ゲーム機本体", price: 70000 },
+        { name: "高級腕時計", price: 300000 },
+        { name: "中古車1台", price: 500000 },
+        { name: "新車購入の頭金", price: 1000000 },
+        { name: "世界一周旅行", price: 1500000 },
+        { name: "マイホームの頭金", price: 3000000 }
+      ];
 
-</div>
+      var BENZ_PRICE = 5500000; // メルセデス・ベンツAクラス 目安価格(円)
+      var YEN = new Intl.NumberFormat("ja-JP");
 
-<script>
-(function () {
-  "use strict";
+      var cigsPerDayEl = document.getElementById("cigsPerDay");
+      var yearsEl = document.getElementById("years");
+      var pricePerPackEl = document.getElementById("pricePerPack");
 
-  // ============ 等価アイテムのマスターデータ(すべて目安価格・円) ============
-  var ITEMS = [
-    { name: "缶コーヒー", price: 130 },
-    { name: "コンビニのおにぎり", price: 150 },
-    { name: "缶ビール(500ml)", price: 250 },
-    { name: "スタバのコーヒー", price: 500 },
-    { name: "ラーメン一杯", price: 900 },
-    { name: "映画1本", price: 2000 },
-    { name: "焼肉食べ放題", price: 4000 },
-    { name: "国内旅行1泊2日", price: 30000 },
-    { name: "最新スマートフォン", price: 160000 },
-    { name: "ゲーム機本体", price: 70000 },
-    { name: "高級腕時計", price: 300000 },
-    { name: "中古車1台", price: 500000 },
-    { name: "新車購入の頭金", price: 1000000 },
-    { name: "世界一周旅行", price: 1500000 },
-    { name: "マイホームの頭金", price: 3000000 }
-  ];
+      var cigsPerDayVal = document.getElementById("cigsPerDayVal");
+      var yearsVal = document.getElementById("yearsVal");
 
-  var BENZ_PRICE = 5500000; // メルセデス・ベンツAクラス 目安価格(円)
-  var YEN = new Intl.NumberFormat("ja-JP");
+      var totalAmountEl = document.getElementById("totalAmount");
+      var totalCigsEl = document.getElementById("totalCigs");
 
-  var cigsPerDayEl = document.getElementById("cigsPerDay");
-  var yearsEl = document.getElementById("years");
-  var pricePerPackEl = document.getElementById("pricePerPack");
+      var benzPercentEl = document.getElementById("benzPercent");
+      var benzProgressEl = document.getElementById("benzProgress");
 
-  var cigsPerDayVal = document.getElementById("cigsPerDayVal");
-  var yearsVal = document.getElementById("yearsVal");
+      var itemGridEl = document.getElementById("itemGrid");
+      var pricePerPackField = document.getElementById("pricePerPackField");
+      var shareBtn = document.getElementById("shareBtn");
+      var shareFeedback = document.getElementById("shareFeedback");
 
-  var totalAmountEl = document.getElementById("totalAmount");
-  var totalCigsEl = document.getElementById("totalCigs");
+      // ============ web-design-guidelines: URLへ入力状態を反映(ディープリンク対応) ============
+      (function restoreFromUrl() {
+        var params = new URLSearchParams(window.location.search);
 
-  var benzPercentEl = document.getElementById("benzPercent");
-  var benzProgressEl = document.getElementById("benzProgress");
+        if (params.has("c")) {
+          var c = Number(params.get("c"));
+          if (c >= Number(cigsPerDayEl.min) && c <= Number(cigsPerDayEl.max)) {
+            cigsPerDayEl.value = String(c);
+          }
+        }
+        if (params.has("y")) {
+          var y = Number(params.get("y"));
+          if (y >= Number(yearsEl.min) && y <= Number(yearsEl.max)) {
+            yearsEl.value = String(y);
+          }
+        }
+        if (params.has("p")) {
+          var p = Number(params.get("p"));
+          if (p >= 0 && p <= Number(pricePerPackEl.max)) {
+            pricePerPackEl.value = String(p);
+          }
+        }
+      })();
 
-  var itemGridEl = document.getElementById("itemGrid");
-  var pricePerPackField = document.getElementById("pricePerPackField");
-  var shareBtn = document.getElementById("shareBtn");
-  var shareFeedback = document.getElementById("shareFeedback");
-
-  // ============ web-design-guidelines: URLへ入力状態を反映(ディープリンク対応) ============
-  (function restoreFromUrl() {
-    var params = new URLSearchParams(window.location.search);
-
-    if (params.has("c")) {
-      var c = Number(params.get("c"));
-      if (c >= Number(cigsPerDayEl.min) && c <= Number(cigsPerDayEl.max)) {
-        cigsPerDayEl.value = String(c);
+      function syncUrl() {
+        var params = new URLSearchParams();
+        params.set("c", cigsPerDayEl.value);
+        params.set("y", yearsEl.value);
+        params.set("p", pricePerPackEl.value);
+        var newUrl = window.location.pathname + "?" + params.toString();
+        window.history.replaceState(null, "", newUrl);
       }
-    }
-    if (params.has("y")) {
-      var y = Number(params.get("y"));
-      if (y >= Number(yearsEl.min) && y <= Number(yearsEl.max)) {
-        yearsEl.value = String(y);
+
+      function calcTotal() {
+        var cigsPerDay = Number(cigsPerDayEl.value) || 0;
+        var years = Number(yearsEl.value) || 0;
+        var pricePerPack = Number(pricePerPackEl.value) || 0;
+
+        var totalCigs = cigsPerDay * 365 * years;
+        var pricePerCig = pricePerPack / 20;
+        var totalYen = Math.round(totalCigs * pricePerCig);
+
+        return { totalCigs: totalCigs, totalYen: totalYen };
       }
-    }
-    if (params.has("p")) {
-      var p = Number(params.get("p"));
-      if (p >= 0 && p <= Number(pricePerPackEl.max)) {
-        pricePerPackEl.value = String(p);
+
+      function renderItems(totalYen) {
+        // 買えた個数が1個以上のアイテムを高額順に抽出し、最大6件表示
+        var affordable = ITEMS
+          .map(function (item) {
+            return { name: item.name, price: item.price, count: Math.floor(totalYen / item.price) };
+          })
+          .filter(function (item) { return item.count >= 1; })
+          .sort(function (a, b) { return b.price - a.price; })
+          .slice(0, 6);
+
+        itemGridEl.innerHTML = "";
+
+        if (affordable.length === 0) {
+          var empty = document.createElement("p");
+          empty.className = "item-empty";
+          empty.textContent = "まだ何も買えんレベル(えらい)";
+          itemGridEl.appendChild(empty);
+          return;
+        }
+
+        affordable.forEach(function (item) {
+          var card = document.createElement("div");
+          card.className = "item-card";
+
+          var countEl = document.createElement("div");
+          countEl.className = "item-count";
+          countEl.textContent = YEN.format(item.count) + " 個ぶん";
+
+          var nameEl = document.createElement("div");
+          nameEl.className = "item-name";
+          nameEl.textContent = item.name;
+
+          var priceEl = document.createElement("div");
+          priceEl.className = "item-price";
+          priceEl.textContent = "だいたい ¥" + YEN.format(item.price);
+
+          card.appendChild(countEl);
+          card.appendChild(nameEl);
+          card.appendChild(priceEl);
+          itemGridEl.appendChild(card);
+        });
       }
-    }
-  })();
 
-  function syncUrl() {
-    var params = new URLSearchParams();
-    params.set("c", cigsPerDayEl.value);
-    params.set("y", yearsEl.value);
-    params.set("p", pricePerPackEl.value);
-    var newUrl = window.location.pathname + "?" + params.toString();
-    window.history.replaceState(null, "", newUrl);
-  }
+      function render() {
+        // taste-skill Rule 5: Error States — 0円以下の入力はインラインで警告する
+        var pricePerPackValue = Number(pricePerPackEl.value);
+        pricePerPackField.classList.toggle("has-error", pricePerPackEl.value !== "" && pricePerPackValue <= 0);
 
-  function calcTotal() {
-    var cigsPerDay = Number(cigsPerDayEl.value) || 0;
-    var years = Number(yearsEl.value) || 0;
-    var pricePerPack = Number(pricePerPackEl.value) || 0;
+        var result = calcTotal();
 
-    var totalCigs = cigsPerDay * 365 * years;
-    var pricePerCig = pricePerPack / 20;
-    var totalYen = Math.round(totalCigs * pricePerCig);
+        cigsPerDayVal.textContent = cigsPerDayEl.value;
+        yearsVal.textContent = yearsEl.value;
 
-    return { totalCigs: totalCigs, totalYen: totalYen };
-  }
+        totalAmountEl.textContent = "¥" + YEN.format(result.totalYen);
+        totalCigsEl.textContent = "吸った本数: " + YEN.format(result.totalCigs) + "本";
 
-  function renderItems(totalYen) {
-    // 買えた個数が1個以上のアイテムを高額順に抽出し、最大6件表示
-    var affordable = ITEMS
-      .map(function (item) {
-        return { name: item.name, price: item.price, count: Math.floor(totalYen / item.price) };
-      })
-      .filter(function (item) { return item.count >= 1; })
-      .sort(function (a, b) { return b.price - a.price; })
-      .slice(0, 6);
+        // ベンツ1台の価格に対して何%貯まったかを表示(1台を超えたら100%超の実数のまま表示)
+        var benzPercent = (result.totalYen / BENZ_PRICE) * 100;
 
-    itemGridEl.innerHTML = "";
+        benzPercentEl.textContent = benzPercent.toFixed(1) + "%";
+        benzProgressEl.style.width = Math.min(100, benzPercent).toFixed(1) + "%";
 
-    if (affordable.length === 0) {
-      var empty = document.createElement("p");
-      empty.className = "item-empty";
-      empty.textContent = "まだ何も買えるほどの金額ではありません(それは良いことです)";
-      itemGridEl.appendChild(empty);
-      return;
-    }
+        renderItems(result.totalYen);
+        syncUrl();
+      }
 
-    affordable.forEach(function (item) {
-      var card = document.createElement("div");
-      card.className = "item-card";
+      cigsPerDayEl.addEventListener("input", render);
+      yearsEl.addEventListener("input", render);
+      pricePerPackEl.addEventListener("input", render);
 
-      var countEl = document.createElement("div");
-      countEl.className = "item-count";
-      countEl.textContent = YEN.format(item.count) + " 個分";
+      render();
 
-      var nameEl = document.createElement("div");
-      nameEl.className = "item-name";
-      nameEl.textContent = item.name;
+      shareBtn.addEventListener("click", function () {
+        var url = window.location.href;
 
-      var priceEl = document.createElement("div");
-      priceEl.className = "item-price";
-      priceEl.textContent = "目安 ¥" + YEN.format(item.price);
+        function showFeedback(message) {
+          shareFeedback.textContent = message;
+          window.setTimeout(function () {
+            shareFeedback.textContent = "";
+          }, 3000);
+        }
 
-      card.appendChild(countEl);
-      card.appendChild(nameEl);
-      card.appendChild(priceEl);
-      itemGridEl.appendChild(card);
-    });
-  }
-
-  function render() {
-    // taste-skill Rule 5: Error States — 0円以下の入力はインラインで警告する
-    var pricePerPackValue = Number(pricePerPackEl.value);
-    pricePerPackField.classList.toggle("has-error", pricePerPackEl.value !== "" && pricePerPackValue <= 0);
-
-    var result = calcTotal();
-
-    cigsPerDayVal.textContent = cigsPerDayEl.value;
-    yearsVal.textContent = yearsEl.value;
-
-    totalAmountEl.textContent = "¥" + YEN.format(result.totalYen);
-    totalCigsEl.textContent = "総本数: " + YEN.format(result.totalCigs) + "本";
-
-    // ベンツ1台の価格に対して何%貯まったかを表示(1台を超えたら100%超の実数のまま表示)
-    var benzPercent = (result.totalYen / BENZ_PRICE) * 100;
-
-    benzPercentEl.textContent = benzPercent.toFixed(1) + "%";
-    benzProgressEl.style.width = Math.min(100, benzPercent).toFixed(1) + "%";
-
-    renderItems(result.totalYen);
-    syncUrl();
-  }
-
-  cigsPerDayEl.addEventListener("input", render);
-  yearsEl.addEventListener("input", render);
-  pricePerPackEl.addEventListener("input", render);
-
-  render();
-
-  shareBtn.addEventListener("click", function () {
-    var url = window.location.href;
-
-    function showFeedback(message) {
-      shareFeedback.textContent = message;
-      window.setTimeout(function () {
-        shareFeedback.textContent = "";
-      }, 3000);
-    }
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url).then(function () {
-        showFeedback("URLをコピーしました");
-      }).catch(function () {
-        showFeedback("コピーに失敗しました。アドレスバーのURLを手動でコピーしてください");
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function () {
+            showFeedback("コピったで〜");
+          }).catch(function () {
+            showFeedback("あれ、コピー失敗した…アドレスバーから自分でコピってくれ");
+          });
+        } else {
+          // Clipboard APIが使えない環境向けフォールバック
+          showFeedback("このブラウザだと自動コピーできんかった。アドレスバーから自分でコピってくれ");
+        }
       });
-    } else {
-      // Clipboard APIが使えない環境向けフォールバック
-      showFeedback("お使いのブラウザでは自動コピーに対応していません。アドレスバーのURLをコピーしてください");
-    }
-  });
 
-  // ============ ライト/ダーク配色の手動切り替え(localStorageに保存) ============
-  var themeToggle = document.getElementById("themeToggle");
-  var root = document.documentElement;
+      // ============ ライト/ダーク配色の手動切り替え(localStorageに保存) ============
+      var themeToggle = document.getElementById("themeToggle");
+      var root = document.documentElement;
 
-  try {
-    var saved = localStorage.getItem("benz-sim-theme");
-    if (saved === "light" || saved === "dark") {
-      root.setAttribute("data-theme", saved);
-    }
-  } catch (e) {
-    // localStorageが使えない環境(プライベートブラウズ等)は無視して既定配色を使う
-  }
+      try {
+        var saved = localStorage.getItem("benz-sim-theme");
+        if (saved === "light" || saved === "dark") {
+          root.setAttribute("data-theme", saved);
+        }
+      } catch (e) {
+        // localStorageが使えない環境(プライベートブラウズ等)は無視して既定配色を使う
+      }
 
-  themeToggle.addEventListener("click", function () {
-    var current = root.getAttribute("data-theme");
-    var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    var currentlyDark = current === "dark" || (!current && prefersDark);
-    var next = currentlyDark ? "light" : "dark";
+      themeToggle.addEventListener("click", function () {
+        var current = root.getAttribute("data-theme");
+        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var currentlyDark = current === "dark" || (!current && prefersDark);
+        var next = currentlyDark ? "light" : "dark";
 
-    root.setAttribute("data-theme", next);
-    try {
-      localStorage.setItem("benz-sim-theme", next);
-    } catch (e) {
-      // 保存できなくても表示切り替え自体は継続する
-    }
-  });
-})();
-</script>
+        root.setAttribute("data-theme", next);
+        try {
+          localStorage.setItem("benz-sim-theme", next);
+        } catch (e) {
+          // 保存できなくても表示切り替え自体は継続する
+        }
+      });
+    })();
+  </script>
 
 </body>
+
 </html>
