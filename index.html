@@ -134,7 +134,7 @@
     outline-offset: 1px;
   }
   @media (prefers-reduced-motion: reduce) {
-    .progress-fill, .benz-car { transition: none !important; }
+    .progress-fill { transition: none !important; }
   }
 
   .wrap {
@@ -300,14 +300,6 @@
     height: 100%;
     background: var(--header-bar);
     transition: width 0.4s ease;
-  }
-  .benz-car {
-    position: absolute;
-    top: 50%;
-    left: 0%;
-    font-size: 18px;
-    transform: translate(-50%, -60%);
-    transition: left 0.4s ease;
   }
   .benz-note {
     font-size: 11px;
@@ -485,7 +477,6 @@
     <p class="benz-count">あそこに <strong id="benzCount">0</strong> 台分のベンツが停まっていたかも</p>
     <div class="progress-track">
       <div class="progress-fill" id="benzProgress" style="width:0%"></div>
-      <span class="benz-car" id="benzCar" aria-hidden="true" style="left:0%">🚙</span>
     </div>
     <p class="benz-note" id="benzNoteText">次の1台まで 0%</p>
     <p class="benz-note">※メルセデス・ベンツAクラス 目安価格 ¥5,500,000 で計算(実際の価格はグレード・時期により変動します)</p>
@@ -565,7 +556,6 @@
 
   var benzCountEl = document.getElementById("benzCount");
   var benzProgressEl = document.getElementById("benzProgress");
-  var benzCarEl = document.getElementById("benzCar");
   var benzNoteTextEl = document.getElementById("benzNoteText");
 
   var itemGridEl = document.getElementById("itemGrid");
@@ -680,7 +670,6 @@
 
     benzCountEl.textContent = YEN.format(benzCount);
     benzProgressEl.style.width = progressPercent.toFixed(1) + "%";
-    benzCarEl.style.left = progressPercent.toFixed(1) + "%"; // 進捗バーに乗った車が進む演出
 
     if (benzCount === 0 && remainder === 0) {
       benzNoteTextEl.textContent = "次の1台まで 0%";
