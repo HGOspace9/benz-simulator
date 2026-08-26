@@ -20,228 +20,205 @@
 <meta name="twitter:title" content="あそこにベンツがシュミレーター">
 <meta name="twitter:description" content="タバコ代、実はベンツが買えたかもしれません。">
 
-<!-- screenshot-to-code: 16personalities.com(柔らかい診断サイト)と脳内メーカー/うそこメーカー
-     (気取らない賑やかなネタ診断サイト)を参考に、丸ゴシック系の遊び心あるフォントを採用。
-     SaaS的な整いすぎたデザインから、Web玩具/診断コンテンツらしいカジュアルさへ寄せる -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- screenshot-to-code: https://maker.usoko.net/nounai/ (脳内メーカー/うそこメーカー) を参考に、
+     Webフォント・角丸・ドロップシャドウを使わない「昔ながらの気取らない診断サイト」の
+     見た目に振り切る。緑の帯ヘッダー+中央寄せの素朴なレイアウトが特徴 -->
 
 <style>
   /* ============ デザイントークン(ライト/ダーク両対応) ============ */
-  /* awesome-design参照(Laws of UX: von Restorff Effect — 最重要指標を際立たせる)。
-     --dangerを総額表示に採用するにあたり、WCAG AAのコントラスト比(4.5:1)を計算で確認済み:
-     ライト時 背景#fff × 文字#b3432b ≈ 5.6:1 / ダーク時 背景#201f1c × 文字#e3856b ≈ 6.2:1
-     (白文字×--danger背景のバッジも同じ2色の組み合わせなので同じ比率で合格) */
+  /* awesome-design参照(Laws of UX): --dangerのコントラスト比はWCAG AA確認済み
+     (ライト 背景#fff×文字#b3432b ≈5.6:1 / ダーク 背景#1a1a1a×文字#e3856b ≈6.2:1) */
   :root {
-    --page-1: #eafff2;
-    --page-2: #fffbe8;
-    --page-3: #ffeef0;
+    --page: #f4f3ee;
     --surface: #ffffff;
-    --surface-2: #f5f3e8;
-    --ink: #2b2620;
-    --ink-2: #5c554a;
-    --muted: #948c7d;
-    --border: #2b2620;
-    --accent: #0f6b4f;      /* ベンツらしい深緑 */
-    --accent-soft: #d8f5e6;
-    --accent-ink: #ffffff;
+    --surface-2: #f0efe6;
+    --ink: #1a1a1a;
+    --ink-2: #3d3d3d;
+    --muted: #6b6b6b;
+    --border: #c9c7bb;
+    --header-bar: #5c9c1f;   /* 脳内メーカー風の緑帯 */
+    --header-bar-ink: #ffffff;
+    --link: #1155cc;         /* 昔ながらの青いリンク色 */
+    --accent: #0f6b4f;
     --danger: #b3432b;
-    --sun: #ffc93c;
-    --track: #f0ede0;
-    --shadow-pop: 5px 5px 0 var(--border);
-    --shadow-pop-sm: 3px 3px 0 var(--border);
+    --promo-bg: #c23b3b;     /* 参考サイトの赤×金の告知ボックス */
+    --promo-border: #ffc93c;
+    --track: #e3e1d4;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --page-1: #14231c;
-      --page-2: #201d14;
-      --page-3: #241417;
-      --surface: #211f1a;
-      --surface-2: #2a2720;
-      --ink: #f3f1ec;
-      --ink-2: #cbc6bd;
-      --muted: #948c7d;
-      --border: #f3f1ec;
+      --page: #1c1c1a;
+      --surface: #242422;
+      --surface-2: #2b2a26;
+      --ink: #ececec;
+      --ink-2: #cfcfcf;
+      --muted: #999790;
+      --border: #46453e;
+      --header-bar: #3f7a12;
+      --header-bar-ink: #ffffff;
+      --link: #7ea6ff;
       --accent: #34c98d;
-      --accent-soft: #143526;
-      --accent-ink: #10201a;
       --danger: #e3856b;
-      --sun: #ffd873;
-      --track: #35322a;
+      --promo-bg: #7a2424;
+      --promo-border: #d9a832;
+      --track: #3a3933;
     }
   }
   :root[data-theme="dark"] {
-    --page-1: #14231c;
-    --page-2: #201d14;
-    --page-3: #241417;
-    --surface: #211f1a;
-    --surface-2: #2a2720;
-    --ink: #f3f1ec;
-    --ink-2: #cbc6bd;
-    --muted: #948c7d;
-    --border: #f3f1ec;
+    --page: #1c1c1a;
+    --surface: #242422;
+    --surface-2: #2b2a26;
+    --ink: #ececec;
+    --ink-2: #cfcfcf;
+    --muted: #999790;
+    --border: #46453e;
+    --header-bar: #3f7a12;
+    --header-bar-ink: #ffffff;
+    --link: #7ea6ff;
     --accent: #34c98d;
-    --accent-soft: #143526;
-    --accent-ink: #10201a;
     --danger: #e3856b;
-    --sun: #ffd873;
-    --track: #35322a;
+    --promo-bg: #7a2424;
+    --promo-border: #d9a832;
+    --track: #3a3933;
   }
 
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
-    background: linear-gradient(160deg, var(--page-1) 0%, var(--page-2) 55%, var(--page-3) 100%);
-    background-attachment: fixed;
+    background: var(--page);
     color: var(--ink);
-    font-family: "Zen Maru Gothic", system-ui, -apple-system, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
-  .wrap {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 32px 20px 96px;
+    /* 参考サイトはWebフォントを使わない素朴な既定フォント。丸ゴシック等の演出は行わない */
+    font-family: "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic", system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
   }
 
-  /* ============ ヘッダー ============ */
-  /* taste-skill: 中央揃え一辺倒(ANTI-CENTER BIAS)を避け、左詰め+マスコット絵文字で非対称に構成 */
-  header.hero {
-    text-align: left;
-    padding: 12px 0 8px;
-    position: relative;
+  /* ============ ヘッダー(緑の帯) ============ */
+  /* web-design-guidelines: 配色切替ボタンをfixed配置にせず帯の中に組み込み、
+     狭い画面でタイトルと重なって隠れてしまう問題を解消する */
+  .site-header-bar {
+    background: var(--header-bar);
+    color: var(--header-bar-ink);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
   }
-  .mascot {
-    font-size: 34px;
-    margin-bottom: 6px;
-    display: block;
-  }
-  .kicker {
-    display: inline-block;
-    font-family: "Zen Maru Gothic", sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: var(--ink);
-    background: var(--sun);
-    border: 2px solid var(--border);
-    border-radius: 999px;
-    padding: 3px 12px;
-    transform: rotate(-3deg);
-    margin-bottom: 10px;
-  }
-  header.hero h1 {
-    font-family: "Kiwi Maru", "Zen Maru Gothic", sans-serif;
-    font-weight: 500;
-    font-size: clamp(28px, 7vw, 40px);
-    line-height: 1.35;
-    margin: 4px 0 10px;
-    letter-spacing: -0.01em;
-    text-wrap: balance; /* web-design-guidelines: 見出しの改行位置を美しく揃える */
-  }
-  header.hero p.lead {
-    color: var(--ink-2);
+  .site-header-bar h1 {
+    grid-column: 2;
+    text-align: center;
     margin: 0;
-    font-size: 15px;
-    max-width: 46ch;
+    font-size: clamp(13px, 4vw, 17px);
+    font-weight: bold;
+    white-space: nowrap;
   }
   .theme-toggle {
-    position: fixed;
-    top: 16px;
-    right: 16px;
-    z-index: 10;
-    border: 2px solid var(--border);
+    grid-column: 3;
+    justify-self: end;
+    border: 1px solid var(--border);
     background: var(--surface);
-    color: var(--ink);
-    border-radius: 999px;
-    padding: 8px 14px;
-    font-size: 13px;
+    color: var(--ink-2);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 12px;
     font-family: inherit;
-    font-weight: 500;
     cursor: pointer;
-    box-shadow: var(--shadow-pop-sm);
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    white-space: nowrap;
     touch-action: manipulation; /* web-design-guidelines: モバイルでのダブルタップズーム遅延を防ぐ */
-  }
-  /* taste-skill Rule 5 + Web玩具の「スタンプが沈む」感触: 影を潰して押下フィードバックを表現 */
-  .theme-toggle:active {
-    transform: translate(3px, 3px);
-    box-shadow: 0 0 0 var(--border);
-  }
-  /* web-design-guidelines: prefers-reduced-motionを尊重し、アニメーションを最小化する */
-  @media (prefers-reduced-motion: reduce) {
-    .theme-toggle,
-    .share-btn,
-    .progress-fill,
-    .benz-car {
-      transition: none !important;
-    }
   }
   .theme-toggle:focus-visible,
   button:focus-visible,
   input:focus-visible {
-    outline: 3px solid var(--accent);
-    outline-offset: 2px;
+    outline: 2px solid var(--link);
+    outline-offset: 1px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .progress-fill, .benz-car { transition: none !important; }
   }
 
-  /* ============ カード共通(コミック風の太い輪郭+オフセット影) ============ */
-  .card {
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: 20px;
-    padding: 22px;
-    box-shadow: var(--shadow-pop);
-    margin-top: 22px;
-  }
-  .card h2 {
-    font-family: "Kiwi Maru", sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-    margin: 0 0 16px;
-    color: var(--ink);
+  .wrap {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+    text-align: center;
   }
 
-  /* ============ 入力フォーム ============ */
-  .field { margin-bottom: 18px; }
+  header.hero {
+    padding: 8px 0 4px;
+  }
+  /* web-design-guidelines: 見出しはページに一つ(帯の中のh1)のみとし、
+     ここはキャッチコピーとして視覚的にはh1相当のサイズでも意味的にはpにする */
+  header.hero p.tagline {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 6px 0 8px;
+  }
+  header.hero p.lead {
+    color: var(--ink-2);
+    margin: 0 auto;
+    font-size: 13px;
+    max-width: 40ch;
+  }
+
+  hr.plain {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 22px 0;
+  }
+
+  /* ============ セクション見出し(装飾なしのテキスト見出し) ============ */
+  .section-title {
+    font-size: 13px;
+    color: var(--ink-2);
+    margin: 0 0 12px;
+    font-weight: bold;
+  }
+
+  /* ============ 入力フォーム(素朴な罫線ボックス) ============ */
+  .field-box {
+    display: inline-block;
+    text-align: left;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .field { margin-bottom: 14px; }
   .field:last-child { margin-bottom: 0; }
   .field label {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--ink-2);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
   .field label .val {
     font-variant-numeric: tabular-nums;
-    color: var(--accent);
-    font-weight: 700;
-    font-size: 15px;
+    color: var(--ink);
+    font-weight: bold;
   }
   .field input[type="number"] {
     width: 100%;
-    padding: 10px 12px;
-    border-radius: 12px;
-    border: 2px solid var(--border);
-    background: var(--surface-2);
+    padding: 6px 8px;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    background: var(--surface);
     color: var(--ink);
-    font-size: 16px;
+    font-size: 14px;
     font-family: inherit;
     font-variant-numeric: tabular-nums;
   }
   .field input[type="range"] {
     width: 100%;
-    accent-color: var(--accent);
+    accent-color: var(--header-bar);
     touch-action: manipulation;
   }
   /* taste-skill Rule 5/6: Error States — 入力欄直下にインラインでエラー表示 */
   .field .error-text {
     display: none;
     color: var(--danger);
-    font-size: 12px;
-    font-weight: 700;
-    margin-top: 6px;
+    font-size: 11px;
+    margin-top: 4px;
   }
   .field.has-error input[type="number"] {
     border-color: var(--danger);
@@ -250,203 +227,188 @@
     display: block;
   }
 
-  /* ============ 結果表示(診断結果チケット風) ============ */
-  /* screenshot-to-code: 脳内メーカー系サイトの「結果カード」らしさを、破線区切り+絵文字装飾で表現 */
+  .price-note {
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  /* ============ 結果表示(参考サイトの赤×金の告知ボックス風) ============ */
   .result-total {
-    text-align: center;
-    position: relative;
-    background: var(--accent-soft);
+    margin: 0 auto;
+    max-width: 460px;
+    background: var(--promo-bg);
+    border: 3px solid var(--promo-border);
+    border-radius: 10px;
+    padding: 18px 16px;
+    color: #ffffff;
   }
   .result-total .caption {
-    color: var(--ink-2);
-    font-size: 14px;
-    margin: 0;
-  }
-  .result-total .sparkle {
-    font-size: 20px;
+    font-size: 13px;
+    margin: 0 0 2px;
   }
   .result-total .amount {
-    font-family: "Kiwi Maru", sans-serif;
-    font-weight: 500;
-    font-size: clamp(38px, 12vw, 58px);
+    font-size: clamp(30px, 9vw, 42px);
+    font-weight: bold;
     letter-spacing: -0.01em;
     font-variant-numeric: tabular-nums;
-    margin: 8px 0 4px;
-    color: var(--danger);
+    margin: 4px 0;
   }
   .result-total .sub {
-    color: var(--muted);
-    font-size: 13px;
-    padding-bottom: 16px;
-    border-bottom: 2px dashed var(--border);
-    margin: 0 0 14px;
+    font-size: 12px;
+    opacity: 0.9;
+    margin: 0 0 12px;
   }
-  /* web-design-guidelines: URLへの状態反映+シェア導線 */
+  /* web-design-guidelines: URLへの状態反映+シェア導線(参考サイトの青リンク風のシンプルなボタン) */
   .share-btn {
-    border: 2px solid var(--border);
-    background: var(--sun);
-    color: var(--ink);
-    border-radius: 999px;
-    padding: 10px 20px;
-    font-size: 14px;
+    border: 1px solid #ffffff;
+    background: transparent;
+    color: #ffffff;
+    border-radius: 3px;
+    padding: 6px 14px;
+    font-size: 12px;
     font-family: inherit;
-    font-weight: 700;
     cursor: pointer;
     touch-action: manipulation;
-    box-shadow: var(--shadow-pop-sm);
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
-  }
-  .share-btn:active {
-    transform: translate(3px, 3px);
-    box-shadow: 0 0 0 var(--border);
   }
   .share-feedback {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--accent);
+    font-size: 11px;
+    color: #ffffff;
     min-height: 1.6em;
-    margin: 8px 0 0;
+    margin: 6px 0 0;
   }
 
   /* ============ ベンツ進捗バー ============ */
-  .benz-block { text-align: center; }
   .benz-count {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 14px;
+    font-size: 14px;
+    margin-bottom: 10px;
   }
   .benz-count strong {
-    font-family: "Kiwi Maru", sans-serif;
-    color: var(--accent);
-    font-size: 28px;
+    color: var(--header-bar);
+    font-size: 18px;
   }
   .progress-track {
     position: relative;
     width: 100%;
-    height: 16px;
-    border-radius: 999px;
+    max-width: 460px;
+    height: 12px;
+    border: 1px solid var(--border);
     background: var(--track);
-    border: 2px solid var(--border);
     overflow: visible;
-    margin: 28px 0 8px;
+    margin: 22px auto 6px;
   }
   .progress-fill {
     height: 100%;
-    border-radius: 999px;
-    background: var(--accent);
+    background: var(--header-bar);
     transition: width 0.4s ease;
   }
-  /* 進捗バーの上を走る車の絵文字。進捗%に応じてJSでleftを更新する遊び要素 */
   .benz-car {
     position: absolute;
     top: 50%;
     left: 0%;
-    font-size: 22px;
+    font-size: 18px;
     transform: translate(-50%, -60%);
     transition: left 0.4s ease;
   }
   .benz-note {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
   }
 
-  /* ============ 等価アイテムリスト(散らばったステッカー風) ============ */
+  /* ============ 等価アイテムリスト(素朴な表形式) ============ */
   .item-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 14px;
-    padding-top: 4px;
+    display: block;
+    max-width: 460px;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+    text-align: left;
   }
   .item-card {
-    border: 2px solid var(--border);
-    background: var(--surface-2);
-    border-radius: 14px;
-    padding: 14px;
-    box-shadow: var(--shadow-pop-sm);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
   }
-  /* screenshot-to-code: 整列しすぎたグリッドを避け、カードごとにわずかな傾きでネタサイトらしさを出す */
-  .item-card:nth-child(3n+1) { transform: rotate(-1.5deg); }
-  .item-card:nth-child(3n+2) { transform: rotate(1deg); }
-  .item-card:nth-child(3n+3) { transform: rotate(-0.5deg); }
+  .item-card:last-child { border-bottom: none; }
+  .item-card:nth-child(even) { background: var(--surface-2); }
   .item-card .item-count {
-    font-family: "Kiwi Maru", sans-serif;
-    font-size: 22px;
-    color: var(--accent);
+    color: var(--link);
+    font-weight: bold;
+    font-size: 14px;
     font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
   }
   .item-card .item-name {
     font-size: 13px;
-    color: var(--ink-2);
-    margin-top: 2px;
+    color: var(--ink);
     overflow: hidden;
     text-overflow: ellipsis; /* web-design-guidelines: 長いテキストの切り詰め */
     white-space: nowrap;
+    flex: 1;
   }
   .item-card .item-price {
     font-size: 11px;
     color: var(--muted);
-    margin-top: 6px;
+    flex-shrink: 0;
   }
   .item-empty {
     color: var(--muted);
-    font-size: 14px;
+    font-size: 13px;
     text-align: center;
-    padding: 8px 0;
+    padding: 10px 0;
   }
 
   /* ============ 広告枠 ============ */
   .ad-slot {
-    margin: 24px 0;
+    margin: 20px auto;
+    max-width: 460px;
     text-align: center;
   }
   .ad-slot__placeholder {
-    border: 2px dashed var(--border);
-    border-radius: 14px;
-    padding: 18px;
+    border: 1px solid var(--border);
+    padding: 14px;
     color: var(--muted);
-    font-size: 12px;
-    background: var(--surface);
+    font-size: 11px;
+    background: var(--surface-2);
   }
 
   /* ============ 免責・フッター ============ */
   .disclaimer {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
     line-height: 1.8;
+    max-width: 460px;
+    margin: 0 auto;
   }
-  .disclaimer p { margin: 0 0 8px; }
+  .disclaimer p { margin: 0 0 6px; }
   .disclaimer p:last-child { margin-bottom: 0; }
   footer {
     text-align: center;
     color: var(--muted);
-    font-size: 12px;
-    margin-top: 32px;
+    font-size: 11px;
+    margin-top: 28px;
   }
 
   .pill-badge {
-    display: inline-block;
-    background: var(--sun);
-    border: 2px solid var(--border);
-    color: var(--ink);
-    border-radius: 999px;
-    padding: 2px 10px;
+    color: var(--link);
     font-size: 11px;
-    font-weight: 700;
-    margin-left: 6px;
+    margin-left: 4px;
   }
 </style>
 </head>
 <body>
 
-<button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える"><span aria-hidden="true">🌓</span> 配色切替</button>
+<div class="site-header-bar">
+  <h1>あそこにベンツがシュミレーター</h1>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">配色切替</button>
+</div>
 
 <div class="wrap">
 
   <header class="hero">
-    <span class="mascot" aria-hidden="true">🚬💨🏎️</span>
-    <span class="kicker">タバコ代 診断シミュレーター</span>
-    <h1>あそこにベンツが<br>シュミレーター</h1>
-    <p class="lead">タバコに費やしたお金、実はベンツが買えていたかもしれません。</p>
+    <p class="tagline">タバコ代、実はベンツが買えていたかも？</p>
+    <p class="lead">本数と年数を入力すると、これまでのタバコ代とその使い道を診断します。</p>
   </header>
 
   <!-- 広告枠①: ヘッダー下 -->
@@ -469,32 +431,35 @@
   </div>
 
   <!-- ============ 入力フォーム ============ -->
-  <section class="card" aria-label="入力">
-    <h2>✏️ あなたの喫煙データを入力</h2>
+  <section aria-label="入力">
+    <h2 class="section-title">あなたの喫煙データを入力</h2>
+    <div class="field-box">
+      <div class="field">
+        <label for="cigsPerDay">1日に吸う本数 <span class="val" id="cigsPerDayVal">20</span> 本</label>
+        <input type="range" id="cigsPerDay" name="cigsPerDay" min="1" max="60" value="20" step="1" autocomplete="off">
+      </div>
 
-    <div class="field">
-      <label for="cigsPerDay">1日に吸う本数 <span class="val" id="cigsPerDayVal">20</span> 本</label>
-      <input type="range" id="cigsPerDay" name="cigsPerDay" min="1" max="60" value="20" step="1" autocomplete="off">
-    </div>
+      <div class="field">
+        <label for="years">喫煙年数 <span class="val" id="yearsVal">10</span> 年</label>
+        <input type="range" id="years" name="years" min="1" max="50" value="10" step="1" autocomplete="off">
+      </div>
 
-    <div class="field">
-      <label for="years">喫煙年数 <span class="val" id="yearsVal">10</span> 年</label>
-      <input type="range" id="years" name="years" min="1" max="50" value="10" step="1" autocomplete="off">
-    </div>
-
-    <div class="field" id="pricePerPackField">
-      <label for="pricePerPack">1箱(20本入り)の価格<span class="pill-badge">目安 ¥600</span></label>
-      <input type="number" id="pricePerPack" name="pricePerPack" min="0" max="2000" step="10" value="600" autocomplete="off" aria-describedby="pricePerPackError">
-      <p class="error-text" id="pricePerPackError">価格は1円以上を入力してください</p>
+      <div class="field" id="pricePerPackField">
+        <label for="pricePerPack">1箱(20本入り)の価格<span class="pill-badge">目安 ¥600</span></label>
+        <input type="number" id="pricePerPack" name="pricePerPack" min="0" max="2000" step="10" value="600" autocomplete="off" aria-describedby="pricePerPackError">
+        <p class="error-text" id="pricePerPackError">価格は1円以上を入力してください</p>
+      </div>
     </div>
   </section>
 
-  <!-- ============ 結果: 総額(診断チケット風) ============ -->
-  <section class="card result-total" aria-live="polite">
-    <p class="caption"><span class="sparkle" aria-hidden="true">✨</span> これまでにタバコへ使った金額の目安 <span class="sparkle" aria-hidden="true">✨</span></p>
+  <hr class="plain">
+
+  <!-- ============ 結果: 総額 ============ -->
+  <section class="result-total" aria-live="polite">
+    <p class="caption">これまでにタバコへ使った金額の目安</p>
     <p class="amount" id="totalAmount">¥0</p>
     <p class="sub" id="totalCigs">総本数: 0本</p>
-    <button class="share-btn" id="shareBtn" type="button">🔗 この結果のURLをコピー</button>
+    <button class="share-btn" id="shareBtn" type="button">この結果のURLをコピー</button>
     <p class="share-feedback" id="shareFeedback" aria-live="polite"></p>
   </section>
 
@@ -515,8 +480,8 @@
   </div>
 
   <!-- ============ ベンツ進捗バー ============ -->
-  <section class="card benz-block" aria-label="ベンツ換算">
-    <h2 style="text-align:center">🚗 ベンツ換算</h2>
+  <section aria-label="ベンツ換算">
+    <h2 class="section-title">ベンツ換算</h2>
     <p class="benz-count">あそこに <strong id="benzCount">0</strong> 台分のベンツが停まっていたかも</p>
     <div class="progress-track">
       <div class="progress-fill" id="benzProgress" style="width:0%"></div>
@@ -526,9 +491,11 @@
     <p class="benz-note">※メルセデス・ベンツAクラス 目安価格 ¥5,500,000 で計算(実際の価格はグレード・時期により変動します)</p>
   </section>
 
+  <hr class="plain">
+
   <!-- ============ 等価アイテムリスト ============ -->
-  <section class="card" aria-label="他の換算アイテム">
-    <h2>🛍️ 同じ金額で買えたかもしれないもの</h2>
+  <section aria-label="他の換算アイテム">
+    <h2 class="section-title">同じ金額で買えたかもしれないもの</h2>
     <div class="item-grid" id="itemGrid"></div>
   </section>
 
@@ -549,7 +516,7 @@
   </div>
 
   <!-- ============ 免責事項 ============ -->
-  <section class="card disclaimer">
+  <section class="disclaimer">
     <p>※本サイトに表示される金額・商品価格はすべて目安であり、実際の価格を保証するものではありません。エンタメ・啓発目的の簡易シミュレーターです。</p>
     <p>※喫煙は健康に影響を及ぼす可能性があります。禁煙をお考えの方は、医療機関や禁煙外来へのご相談をおすすめします。</p>
   </section>
@@ -677,7 +644,7 @@
 
       var countEl = document.createElement("div");
       countEl.className = "item-count";
-      countEl.textContent = YEN.format(item.count) + " 個分";
+      countEl.textContent = YEN.format(item.count) + "個分";
 
       var nameEl = document.createElement("div");
       nameEl.className = "item-name";
@@ -685,7 +652,7 @@
 
       var priceEl = document.createElement("div");
       priceEl.className = "item-price";
-      priceEl.textContent = "目安 ¥" + YEN.format(item.price);
+      priceEl.textContent = "目安¥" + YEN.format(item.price);
 
       card.appendChild(countEl);
       card.appendChild(nameEl);
@@ -713,7 +680,7 @@
 
     benzCountEl.textContent = YEN.format(benzCount);
     benzProgressEl.style.width = progressPercent.toFixed(1) + "%";
-    benzCarEl.style.left = progressPercent.toFixed(1) + "%"; // screenshot-to-code: 進捗バーに乗った車が進む遊び演出
+    benzCarEl.style.left = progressPercent.toFixed(1) + "%"; // 進捗バーに乗った車が進む演出
 
     if (benzCount === 0 && remainder === 0) {
       benzNoteTextEl.textContent = "次の1台まで 0%";
