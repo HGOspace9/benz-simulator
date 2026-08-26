@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>あそこにベンツがシュミレーター｜タバコ代でベンツが買えたかも診断</title>
+<meta name="description" content="1日に吸う本数と喫煙年数を入力するだけで、タバコに使った総額と『同じお金で買えたもの』をベンツ換算で診断します。禁煙のきっかけにどうぞ。">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://example.com/">
+
+<!-- OGP / SNSシェア用タグ(公開URLが決まったら og:url と og:image を実際の値に差し替えてください) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="あそこにベンツがシュミレーター">
+<meta property="og:description" content="タバコ代、実はベンツが買えたかもしれません。本数と年数を入れるだけの診断シミュレーターです。">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="あそこにベンツがシュミレーター">
+<meta name="twitter:description" content="タバコ代、実はベンツが買えたかもしれません。">
+
+<style>
+  /* ============ デザイントークン(ライト/ダーク両対応) ============ */
+  :root {
+    --page: #f6f5f3;
+    --surface: #ffffff;
+    --surface-2: #f0eeeb;
+    --ink: #1c1a17;
+    --ink-2: #4a4640;
+    --muted: #8a847a;
+    --border: #e4e0d9;
+    --accent: #0f6b4f;      /* ベンツらしい深緑 */
+    --accent-ink: #ffffff;
+    --danger: #b3432b;
+    --track: #e9e5dd;
+    --shadow: 0 1px 2px rgba(28,26,23,0.04), 0 8px 24px rgba(28,26,23,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --page: #161513;
+      --surface: #201f1c;
+      --surface-2: #262420;
+      --ink: #f3f1ec;
+      --ink-2: #cbc6bd;
+      --muted: #8f897e;
+      --border: #35322c;
+      --accent: #34c98d;
+      --accent-ink: #10201a;
+      --danger: #e3856b;
+      --track: #2c2a25;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --page: #161513;
+    --surface: #201f1c;
+    --surface-2: #262420;
+    --ink: #f3f1ec;
+    --ink-2: #cbc6bd;
+    --muted: #8f897e;
+    --border: #35322c;
+    --accent: #34c98d;
+    --accent-ink: #10201a;
+    --danger: #e3856b;
+    --track: #2c2a25;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 20px 96px;
+  }
+
+  /* ============ ヘッダー ============ */
+  header.hero {
+    text-align: center;
+    padding: 24px 0 8px;
+  }
+  header.hero h1 {
+    font-size: clamp(24px, 5vw, 34px);
+    line-height: 1.35;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  header.hero p.lead {
+    color: var(--ink-2);
+    margin: 0;
+    font-size: 15px;
+  }
+  .theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink-2);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+  }
+  .theme-toggle:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ============ カード共通 ============ */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 20px;
+  }
+  .card h2 {
+    font-size: 15px;
+    margin: 0 0 16px;
+    color: var(--ink-2);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* ============ 入力フォーム ============ */
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  .field label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 13px;
+    color: var(--ink-2);
+    margin-bottom: 6px;
+  }
+  .field label .val {
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .field input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--ink);
+    font-size: 16px;
+    font-variant-numeric: tabular-nums;
+  }
+  .field input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+  }
+
+  /* ============ 結果表示 ============ */
+  .result-total {
+    text-align: center;
+    padding: 8px 0 4px;
+  }
+  .result-total .caption {
+    color: var(--ink-2);
+    font-size: 14px;
+  }
+  .result-total .amount {
+    font-size: clamp(32px, 9vw, 48px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    margin: 4px 0;
+    color: var(--danger);
+  }
+  .result-total .sub {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* ============ ベンツ進捗バー ============ */
+  .benz-block { text-align: center; }
+  .benz-count {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .benz-count strong {
+    color: var(--accent);
+    font-size: 26px;
+  }
+  .progress-track {
+    width: 100%;
+    height: 14px;
+    border-radius: 999px;
+    background: var(--track);
+    overflow: hidden;
+    margin: 12px 0 8px;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--accent);
+    transition: width 0.4s ease;
+  }
+  .benz-note {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ============ 等価アイテムリスト ============ */
+  .item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .item-card {
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .item-card .item-count {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .item-card .item-name {
+    font-size: 13px;
+    color: var(--ink-2);
+    margin-top: 2px;
+  }
+  .item-card .item-price {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .item-empty {
+    color: var(--muted);
+    font-size: 14px;
+    text-align: center;
+    padding: 8px 0;
+  }
+
+  /* ============ 広告枠 ============ */
+  .ad-slot {
+    margin: 24px 0;
+    text-align: center;
+  }
+  .ad-slot__placeholder {
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    color: var(--muted);
+    font-size: 12px;
+    background: var(--surface-2);
+  }
+
+  /* ============ 免責・フッター ============ */
+  .disclaimer {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .disclaimer p { margin: 0 0 8px; }
+  .disclaimer p:last-child { margin-bottom: 0; }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 32px;
+  }
+
+  .pill-badge {
+    display: inline-block;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--ink-2);
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 11px;
+    margin-left: 6px;
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">🌓 配色切替</button>
+
+<div class="wrap">
+
+  <header class="hero">
+    <h1>あそこにベンツが<br>シュミレーター</h1>
+    <p class="lead">タバコに費やしたお金、実はベンツが買えていたかもしれません。</p>
+  </header>
+
+  <!-- 広告枠①: ヘッダー下 -->
+  <div class="ad-slot">
+    <!--
+      Google AdSense 広告コード(ヘッダー下)
+      審査通過後、下記コメントを解除して data-ad-client / data-ad-slot を
+      実際のパブリッシャーID・広告ユニットIDに置き換えてください。
+
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    -->
+    <div class="ad-slot__placeholder">広告スペース（AdSense審査通過後に設置）</div>
+  </div>
+
+  <!-- ============ 入力フォーム ============ -->
+  <section class="card" aria-label="入力">
+    <h2>あなたの喫煙データを入力</h2>
+
+    <div class="field">
+      <label for="cigsPerDay">1日に吸う本数 <span class="val" id="cigsPerDayVal">20</span> 本</label>
+      <input type="range" id="cigsPerDay" min="1" max="60" value="20" step="1">
+    </div>
+
+    <div class="field">
+      <label for="years">喫煙年数 <span class="val" id="yearsVal">10</span> 年</label>
+      <input type="range" id="years" min="1" max="50" value="10" step="1">
+    </div>
+
+    <div class="field">
+      <label for="pricePerPack">1箱(20本入り)の価格<span class="pill-badge">目安 ¥600</span></label>
+      <input type="number" id="pricePerPack" min="100" max="2000" step="10" value="600">
+    </div>
+  </section>
+
+  <!-- ============ 結果: 総額 ============ -->
+  <section class="card result-total" aria-live="polite">
+    <p class="caption">これまでにタバコへ使った金額の目安</p>
+    <p class="amount" id="totalAmount">¥0</p>
+    <p class="sub" id="totalCigs">総本数: 0本</p>
+  </section>
+
+  <!-- 広告枠②: 結果直後 -->
+  <div class="ad-slot">
+    <!--
+      Google AdSense 広告コード(結果表示直後)
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    -->
+    <div class="ad-slot__placeholder">広告スペース（AdSense審査通過後に設置）</div>
+  </div>
+
+  <!-- ============ ベンツ進捗バー ============ -->
+  <section class="card benz-block" aria-label="ベンツ換算">
+    <h2 style="text-align:center">ベンツ換算</h2>
+    <p class="benz-count">あそこに <strong id="benzCount">0</strong> 台分のベンツが停まっていたかも</p>
+    <div class="progress-track">
+      <div class="progress-fill" id="benzProgress" style="width:0%"></div>
+    </div>
+    <p class="benz-note" id="benzNoteText">次の1台まで 0%</p>
+    <p class="benz-note">※メルセデス・ベンツAクラス 目安価格 ¥5,500,000 で計算(実際の価格はグレード・時期により変動します)</p>
+  </section>
+
+  <!-- ============ 等価アイテムリスト ============ -->
+  <section class="card" aria-label="他の換算アイテム">
+    <h2>同じ金額で買えたかもしれないもの</h2>
+    <div class="item-grid" id="itemGrid"></div>
+  </section>
+
+  <!-- 広告枠③: フッター上 -->
+  <div class="ad-slot">
+    <!--
+      Google AdSense 広告コード(フッター上)
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    -->
+    <div class="ad-slot__placeholder">広告スペース（AdSense審査通過後に設置）</div>
+  </div>
+
+  <!-- ============ 免責事項 ============ -->
+  <section class="card disclaimer">
+    <p>※本サイトに表示される金額・商品価格はすべて目安であり、実際の価格を保証するものではありません。エンタメ・啓発目的の簡易シミュレーターです。</p>
+    <p>※喫煙は健康に影響を及ぼす可能性があります。禁煙をお考えの方は、医療機関や禁煙外来へのご相談をおすすめします。</p>
+  </section>
+
+  <footer>
+    <p>あそこにベンツがシュミレーター</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ============ 等価アイテムのマスターデータ(すべて目安価格・円) ============
+  var ITEMS = [
+    { name: "缶コーヒー", price: 130 },
+    { name: "コンビニのおにぎり", price: 150 },
+    { name: "缶ビール(500ml)", price: 250 },
+    { name: "スタバのコーヒー", price: 500 },
+    { name: "ラーメン一杯", price: 900 },
+    { name: "映画1本", price: 2000 },
+    { name: "焼肉食べ放題", price: 4000 },
+    { name: "国内旅行1泊2日", price: 30000 },
+    { name: "最新スマートフォン", price: 160000 },
+    { name: "ゲーム機本体", price: 70000 },
+    { name: "高級腕時計", price: 300000 },
+    { name: "中古車1台", price: 500000 },
+    { name: "新車購入の頭金", price: 1000000 },
+    { name: "世界一周旅行", price: 1500000 },
+    { name: "マイホームの頭金", price: 3000000 }
+  ];
+
+  var BENZ_PRICE = 5500000; // メルセデス・ベンツAクラス 目安価格(円)
+  var YEN = new Intl.NumberFormat("ja-JP");
+
+  var cigsPerDayEl = document.getElementById("cigsPerDay");
+  var yearsEl = document.getElementById("years");
+  var pricePerPackEl = document.getElementById("pricePerPack");
+
+  var cigsPerDayVal = document.getElementById("cigsPerDayVal");
+  var yearsVal = document.getElementById("yearsVal");
+
+  var totalAmountEl = document.getElementById("totalAmount");
+  var totalCigsEl = document.getElementById("totalCigs");
+
+  var benzCountEl = document.getElementById("benzCount");
+  var benzProgressEl = document.getElementById("benzProgress");
+  var benzNoteTextEl = document.getElementById("benzNoteText");
+
+  var itemGridEl = document.getElementById("itemGrid");
+
+  function calcTotal() {
+    var cigsPerDay = Number(cigsPerDayEl.value) || 0;
+    var years = Number(yearsEl.value) || 0;
+    var pricePerPack = Number(pricePerPackEl.value) || 0;
+
+    var totalCigs = cigsPerDay * 365 * years;
+    var pricePerCig = pricePerPack / 20;
+    var totalYen = Math.round(totalCigs * pricePerCig);
+
+    return { totalCigs: totalCigs, totalYen: totalYen };
+  }
+
+  function renderItems(totalYen) {
+    // 買えた個数が1個以上のアイテムを高額順に抽出し、最大6件表示
+    var affordable = ITEMS
+      .map(function (item) {
+        return { name: item.name, price: item.price, count: Math.floor(totalYen / item.price) };
+      })
+      .filter(function (item) { return item.count >= 1; })
+      .sort(function (a, b) { return b.price - a.price; })
+      .slice(0, 6);
+
+    itemGridEl.innerHTML = "";
+
+    if (affordable.length === 0) {
+      var empty = document.createElement("p");
+      empty.className = "item-empty";
+      empty.textContent = "まだ何も買えるほどの金額ではありません(それは良いことです)";
+      itemGridEl.appendChild(empty);
+      return;
+    }
+
+    affordable.forEach(function (item) {
+      var card = document.createElement("div");
+      card.className = "item-card";
+
+      var countEl = document.createElement("div");
+      countEl.className = "item-count";
+      countEl.textContent = YEN.format(item.count) + " 個分";
+
+      var nameEl = document.createElement("div");
+      nameEl.className = "item-name";
+      nameEl.textContent = item.name;
+
+      var priceEl = document.createElement("div");
+      priceEl.className = "item-price";
+      priceEl.textContent = "目安 ¥" + YEN.format(item.price);
+
+      card.appendChild(countEl);
+      card.appendChild(nameEl);
+      card.appendChild(priceEl);
+      itemGridEl.appendChild(card);
+    });
+  }
+
+  function render() {
+    var result = calcTotal();
+
+    cigsPerDayVal.textContent = cigsPerDayEl.value;
+    yearsVal.textContent = yearsEl.value;
+
+    totalAmountEl.textContent = "¥" + YEN.format(result.totalYen);
+    totalCigsEl.textContent = "総本数: " + YEN.format(result.totalCigs) + "本";
+
+    var benzCount = Math.floor(result.totalYen / BENZ_PRICE);
+    var remainder = result.totalYen % BENZ_PRICE;
+    var progressPercent = Math.min(100, (remainder / BENZ_PRICE) * 100);
+
+    benzCountEl.textContent = YEN.format(benzCount);
+    benzProgressEl.style.width = progressPercent.toFixed(1) + "%";
+
+    if (benzCount === 0 && remainder === 0) {
+      benzNoteTextEl.textContent = "次の1台まで 0%";
+    } else {
+      benzNoteTextEl.textContent = "次の1台まで " + progressPercent.toFixed(1) + "%";
+    }
+
+    renderItems(result.totalYen);
+  }
+
+  cigsPerDayEl.addEventListener("input", render);
+  yearsEl.addEventListener("input", render);
+  pricePerPackEl.addEventListener("input", render);
+
+  render();
+
+  // ============ ライト/ダーク配色の手動切り替え(localStorageに保存) ============
+  var themeToggle = document.getElementById("themeToggle");
+  var root = document.documentElement;
+
+  try {
+    var saved = localStorage.getItem("benz-sim-theme");
+    if (saved === "light" || saved === "dark") {
+      root.setAttribute("data-theme", saved);
+    }
+  } catch (e) {
+    // localStorageが使えない環境(プライベートブラウズ等)は無視して既定配色を使う
+  }
+
+  themeToggle.addEventListener("click", function () {
+    var current = root.getAttribute("data-theme");
+    var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var currentlyDark = current === "dark" || (!current && prefersDark);
+    var next = currentlyDark ? "light" : "dark";
+
+    root.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("benz-sim-theme", next);
+    } catch (e) {
+      // 保存できなくても表示切り替え自体は継続する
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
