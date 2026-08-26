@@ -2,7 +2,7 @@
 <!-- 公開ドメインが決まったら loc を実際のURLに差し替えてください -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://example.com/</loc>
+    <loc>https://hgospace9.github.io/benz-simulator/</loc>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
