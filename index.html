@@ -474,12 +474,11 @@
   <!-- ============ ベンツ進捗バー ============ -->
   <section aria-label="ベンツ換算">
     <h2 class="section-title">ベンツ換算</h2>
-    <p class="benz-count">あそこに <strong id="benzCount">0</strong> 台分のベンツが停まっていたかも</p>
+    <p class="benz-count">ベンツ1台分のうち <strong id="benzPercent">0%</strong> 貯まりました</p>
     <div class="progress-track">
       <div class="progress-fill" id="benzProgress" style="width:0%"></div>
     </div>
-    <p class="benz-note" id="benzNoteText">次の1台まで 0%</p>
-    <p class="benz-note">※メルセデス・ベンツAクラス 目安価格 ¥5,500,000 で計算(実際の価格はグレード・時期により変動します)</p>
+    <p class="benz-note">※メルセデス・ベンツAクラス 目安価格 ¥5,500,000 に対する割合で計算(実際の価格はグレード・時期により変動します)</p>
   </section>
 
   <hr class="plain">
@@ -554,9 +553,8 @@
   var totalAmountEl = document.getElementById("totalAmount");
   var totalCigsEl = document.getElementById("totalCigs");
 
-  var benzCountEl = document.getElementById("benzCount");
+  var benzPercentEl = document.getElementById("benzPercent");
   var benzProgressEl = document.getElementById("benzProgress");
-  var benzNoteTextEl = document.getElementById("benzNoteText");
 
   var itemGridEl = document.getElementById("itemGrid");
   var pricePerPackField = document.getElementById("pricePerPackField");
@@ -664,18 +662,11 @@
     totalAmountEl.textContent = "¥" + YEN.format(result.totalYen);
     totalCigsEl.textContent = "総本数: " + YEN.format(result.totalCigs) + "本";
 
-    var benzCount = Math.floor(result.totalYen / BENZ_PRICE);
-    var remainder = result.totalYen % BENZ_PRICE;
-    var progressPercent = Math.min(100, (remainder / BENZ_PRICE) * 100);
+    // ベンツ1台の価格に対して何%貯まったかを表示(1台を超えたら100%超の実数のまま表示)
+    var benzPercent = (result.totalYen / BENZ_PRICE) * 100;
 
-    benzCountEl.textContent = YEN.format(benzCount);
-    benzProgressEl.style.width = progressPercent.toFixed(1) + "%";
-
-    if (benzCount === 0 && remainder === 0) {
-      benzNoteTextEl.textContent = "次の1台まで 0%";
-    } else {
-      benzNoteTextEl.textContent = "次の1台まで " + progressPercent.toFixed(1) + "%";
-    }
+    benzPercentEl.textContent = benzPercent.toFixed(1) + "%";
+    benzProgressEl.style.width = Math.min(100, benzPercent).toFixed(1) + "%";
 
     renderItems(result.totalYen);
     syncUrl();
