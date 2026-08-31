@@ -515,11 +515,11 @@
 
     <header class="hero">
       <!-- # 編集ポイント: タイトル上の小さいバッジ文字 -->
-      <span class="kicker">タバコ代マジやばい選手権</span>
+      <span class="kicker">貯金しろカス</span>
       <!-- # 編集ポイント: でっかいメインタイトル(brで改行) -->
       <h1>あそこにベンツが<br>シュミレーター</h1>
       <!-- # 編集ポイント: タイトル下の説明文 -->
-      <p class="lead">そのタバコ代、ガチでベンツ買えてたかもしれん。ヤバくない?とりま数字いれてみ。</p>
+      <p class="lead"></p>
     </header>
 
     <!-- 広告枠①: ヘッダー下 -->
@@ -545,27 +545,27 @@
     <!-- ============ 入力フォーム ============ -->
     <section class="card" aria-label="入力">
       <!-- # 編集ポイント: 入力フォームの見出し -->
-      <h2>とりあえず数字いれてみ</h2>
+      <h2>数字を入れてください</h2>
 
       <div class="field">
         <!-- # 編集ポイント: 「本数」の質問文(「20」は入力値、変えなくてOK) -->
-        <label for="cigsPerDay">1日何本吸う? <span class="val" id="cigsPerDayVal">20</span> 本</label>
+        <label for="cigsPerDay">1日何本吸う量 <span class="val" id="cigsPerDayVal">20</span> 本</label>
         <input type="range" id="cigsPerDay" name="cigsPerDay" min="1" max="60" value="20" step="1" autocomplete="off">
       </div>
 
       <div class="field">
         <!-- # 編集ポイント: 「年数」の質問文 -->
-        <label for="years">もう何年吸ってる? <span class="val" id="yearsVal">10</span> 年</label>
+        <label for="years">喫煙年数<span class="val" id="yearsVal">10</span> 年</label>
         <input type="range" id="years" name="years" min="1" max="50" value="10" step="1" autocomplete="off">
       </div>
 
       <div class="field" id="pricePerPackField">
         <!-- # 編集ポイント: 「価格」の質問文と、右のだいだい色バッジ文字 -->
-        <label for="pricePerPack">1箱いくらしてる?<span class="pill-badge">だいたい ¥600</span></label>
+        <label for="pricePerPack">1箱の値段は？<span class="pill-badge">だいたい ¥600</span></label>
         <input type="number" id="pricePerPack" name="pricePerPack" min="0" max="2000" step="10" value="600"
           autocomplete="off" aria-describedby="pricePerPackError">
         <!-- # 編集ポイント: 0円以下を入れたときに出るエラー文 -->
-        <p class="error-text" id="pricePerPackError">1円以上にしてくれ〜</p>
+        <p class="error-text" id="pricePerPackError">1円以上にしてください</p>
       </div>
     </section>
 
@@ -577,7 +577,7 @@
       <!-- # 編集ポイント: この下の「吸った本数」のラベルはJS側(script内)にあります(このすぐ下を検索) -->
       <p class="sub" id="totalCigs">吸った本数: 0本</p>
       <!-- # 編集ポイント: 結果をシェアするボタンの文字 -->
-      <button class="share-btn" id="shareBtn" type="button">これ友達にも見せたる</button>
+      <button class="share-btn" id="shareBtn" type="button">友達に見せる</button>
       <p class="share-feedback" id="shareFeedback" aria-live="polite"></p>
     </section>
 
@@ -601,7 +601,7 @@
     <!-- ============ ベンツ進捗バー ============ -->
     <section class="card benz-block" aria-label="ベンツ換算">
       <!-- # 編集ポイント: ベンツ換算セクションの見出し -->
-      <h2 style="text-align:center">ベンツどんだけ買えた?</h2>
+      <h2 style="text-align:center">ベンツのどんだけを買えた?</h2>
       <!-- # 編集ポイント: 「ベンツ1台のうち」「ぶん吸っちゃった」の前後の文字(%の数字はJSが自動計算) -->
       <p class="benz-count">ベンツ1台のうち <strong id="benzPercent">0%</strong> ぶん吸っちゃった</p>
       <div class="progress-track">
