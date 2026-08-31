@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- # 編集ポイント: ブラウザのタブや検索結果に出るタイトル -->
   <title>あそこにベンツがシュミレーター｜タバコ代でベンツが買えたかも診断</title>
+  <!-- # 編集ポイント: Google検索結果に出る説明文 -->
   <meta name="description" content="1日に吸う本数と喫煙年数を入力するだけで、タバコに使った総額と『同じお金で買えたもの』をベンツ換算で診断します。禁煙のきっかけにどうぞ。">
   <meta name="robots" content="index, follow">
   <!-- web-design-guidelines: ダーク/ライト両対応をブラウザのネイティブUI(フォームコントロール・スクロールバー等)にも伝える -->
@@ -12,6 +14,7 @@
   <link rel="canonical" href="https://hgospace9.github.io/benz-simulator/">
 
   <!-- OGP / SNSシェア用タグ(公開URLが決まったら og:url と og:image を実際の値に差し替えてください) -->
+  <!-- # 編集ポイント: LINEやX(Twitter)でURLをシェアしたときに出るタイトル・説明文 -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="あそこにベンツがシュミレーター">
   <meta property="og:description" content="タバコ代、実はベンツが買えたかもしれません。本数と年数を入れるだけの診断シミュレーターです。">
@@ -505,13 +508,17 @@
 
 <body>
 
+  <!-- # 編集ポイント: 右上の配色切替ボタンの文字 -->
   <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">配色切替</button>
 
   <div class="wrap">
 
     <header class="hero">
+      <!-- # 編集ポイント: タイトル上の小さいバッジ文字 -->
       <span class="kicker">タバコ代マジやばい選手権</span>
+      <!-- # 編集ポイント: でっかいメインタイトル(brで改行) -->
       <h1>あそこにベンツが<br>シュミレーター</h1>
+      <!-- # 編集ポイント: タイトル下の説明文 -->
       <p class="lead">そのタバコ代、ガチでベンツ買えてたかもしれん。ヤバくない?とりま数字いれてみ。</p>
     </header>
 
@@ -531,36 +538,45 @@
            data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     -->
+      <!-- # 編集ポイント: 広告枠の仮表示文字(AdSense設置前のダミー表示) -->
       <div class="ad-slot__placeholder">広告スペース（AdSense審査通過後に設置）</div>
     </div>
 
     <!-- ============ 入力フォーム ============ -->
     <section class="card" aria-label="入力">
+      <!-- # 編集ポイント: 入力フォームの見出し -->
       <h2>とりあえず数字いれてみ</h2>
 
       <div class="field">
+        <!-- # 編集ポイント: 「本数」の質問文(「20」は入力値、変えなくてOK) -->
         <label for="cigsPerDay">1日何本吸う? <span class="val" id="cigsPerDayVal">20</span> 本</label>
         <input type="range" id="cigsPerDay" name="cigsPerDay" min="1" max="60" value="20" step="1" autocomplete="off">
       </div>
 
       <div class="field">
+        <!-- # 編集ポイント: 「年数」の質問文 -->
         <label for="years">もう何年吸ってる? <span class="val" id="yearsVal">10</span> 年</label>
         <input type="range" id="years" name="years" min="1" max="50" value="10" step="1" autocomplete="off">
       </div>
 
       <div class="field" id="pricePerPackField">
+        <!-- # 編集ポイント: 「価格」の質問文と、右のだいだい色バッジ文字 -->
         <label for="pricePerPack">1箱いくらしてる?<span class="pill-badge">だいたい ¥600</span></label>
         <input type="number" id="pricePerPack" name="pricePerPack" min="0" max="2000" step="10" value="600"
           autocomplete="off" aria-describedby="pricePerPackError">
+        <!-- # 編集ポイント: 0円以下を入れたときに出るエラー文 -->
         <p class="error-text" id="pricePerPackError">1円以上にしてくれ〜</p>
       </div>
     </section>
 
     <!-- ============ 結果: 総額(診断チケット風) ============ -->
     <section class="card result-total" aria-live="polite">
+      <!-- # 編集ポイント: 結果カードの見出し文 -->
       <p class="caption">今まで煙にして消えたお金がこちら</p>
       <p class="amount" id="totalAmount">¥0</p>
+      <!-- # 編集ポイント: この下の「吸った本数」のラベルはJS側(script内)にあります(このすぐ下を検索) -->
       <p class="sub" id="totalCigs">吸った本数: 0本</p>
+      <!-- # 編集ポイント: 結果をシェアするボタンの文字 -->
       <button class="share-btn" id="shareBtn" type="button">これ友達にも見せたる</button>
       <p class="share-feedback" id="shareFeedback" aria-live="polite"></p>
     </section>
@@ -578,21 +594,26 @@
            data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     -->
+      <!-- # 編集ポイント: 広告枠の仮表示文字(AdSense設置前のダミー表示) -->
       <div class="ad-slot__placeholder">広告スペース（AdSense審査通過後に設置）</div>
     </div>
 
     <!-- ============ ベンツ進捗バー ============ -->
     <section class="card benz-block" aria-label="ベンツ換算">
+      <!-- # 編集ポイント: ベンツ換算セクションの見出し -->
       <h2 style="text-align:center">ベンツどんだけ買えた?</h2>
+      <!-- # 編集ポイント: 「ベンツ1台のうち」「ぶん吸っちゃった」の前後の文字(%の数字はJSが自動計算) -->
       <p class="benz-count">ベンツ1台のうち <strong id="benzPercent">0%</strong> ぶん吸っちゃった</p>
       <div class="progress-track">
         <div class="progress-fill" id="benzProgress" style="width:0%"></div>
       </div>
+      <!-- # 編集ポイント: ベンツの車種・価格の注意書き(車種を変えたい場合はJS側のBENZ_PRICEも合わせて変更) -->
       <p class="benz-note">※メルセデス・ベンツAクラス だいたい¥5,500,000として計算(グレードとか時期でちょいちょい変わるから参考程度に)</p>
     </section>
 
     <!-- ============ 等価アイテムリスト ============ -->
     <section class="card" aria-label="他の換算アイテム">
+      <!-- # 編集ポイント: アイテムリストの見出し(中のアイテムはJS側のITEMSを検索) -->
       <h2>この金額あったら買えてたもの</h2>
       <div class="item-grid" id="itemGrid"></div>
     </section>
@@ -610,16 +631,20 @@
            data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     -->
+      <!-- # 編集ポイント: 広告枠の仮表示文字(AdSense設置前のダミー表示) -->
       <div class="ad-slot__placeholder">広告スペース（AdSense審査通過後に設置）</div>
     </div>
 
     <!-- ============ 免責事項 ============ -->
     <section class="card disclaimer">
+      <!-- # 編集ポイント: 免責事項(価格は目安、の文)。※この2文は注意書きとして意図的に丁寧語のままにしています -->
       <p>※本サイトに表示される金額・商品価格はすべて目安であり、実際の価格を保証するものではありません。エンタメ・啓発目的の簡易シミュレーターです。</p>
+      <!-- # 編集ポイント: 免責事項(健康影響、の文) -->
       <p>※喫煙は健康に影響を及ぼす可能性があります。禁煙をお考えの方は、医療機関や禁煙外来へのご相談をおすすめします。</p>
     </section>
 
     <footer>
+      <!-- # 編集ポイント: 一番下のフッター文字 -->
       <p>あそこにベンツがシュミレーター</p>
     </footer>
 
@@ -629,7 +654,8 @@
     (function () {
       "use strict";
 
-      // ============ 等価アイテムのマスターデータ(すべて目安価格・円) ============
+      // # 編集ポイント: 「同じ金額で買えたかもしれないもの」に出すアイテム一覧。
+      // # name(名前)とprice(円)を書き換えたり、行ごと増やしたり減らしたりできます
       var ITEMS = [
         { name: "缶コーヒー", price: 130 },
         { name: "コンビニのおにぎり", price: 150 },
@@ -648,7 +674,8 @@
         { name: "マイホームの頭金", price: 3000000 }
       ];
 
-      var BENZ_PRICE = 5500000; // メルセデス・ベンツAクラス 目安価格(円)
+      // # 編集ポイント: ベンツの目安価格(円)。ここを変えたら上のHTML内「※メルセデス・ベンツAクラス...」の文も合わせて変更してください
+      var BENZ_PRICE = 5500000;
       var YEN = new Intl.NumberFormat("ja-JP");
 
       var cigsPerDayEl = document.getElementById("cigsPerDay");
@@ -729,6 +756,7 @@
         if (affordable.length === 0) {
           var empty = document.createElement("p");
           empty.className = "item-empty";
+          // # 編集ポイント: 何も買えない金額のときに出す文
           empty.textContent = "まだ何も買えんレベル(えらい)";
           itemGridEl.appendChild(empty);
           return;
@@ -740,6 +768,7 @@
 
           var countEl = document.createElement("div");
           countEl.className = "item-count";
+          // # 編集ポイント: 個数のあとに付く単語(「個ぶん」の部分。数字はJSが自動計算)
           countEl.textContent = YEN.format(item.count) + " 個ぶん";
 
           var nameEl = document.createElement("div");
@@ -748,6 +777,7 @@
 
           var priceEl = document.createElement("div");
           priceEl.className = "item-price";
+          // # 編集ポイント: 値段の前に付く言葉(「だいたい ¥」の部分)
           priceEl.textContent = "だいたい ¥" + YEN.format(item.price);
 
           card.appendChild(countEl);
@@ -768,6 +798,7 @@
         yearsVal.textContent = yearsEl.value;
 
         totalAmountEl.textContent = "¥" + YEN.format(result.totalYen);
+        // # 編集ポイント: 総本数の前に付く言葉(「吸った本数: 」の部分)
         totalCigsEl.textContent = "吸った本数: " + YEN.format(result.totalCigs) + "本";
 
         // ベンツ1台の価格に対して何%貯まったかを表示(1台を超えたら100%超の実数のまま表示)
@@ -796,6 +827,7 @@
           }, 3000);
         }
 
+        // # 編集ポイント: シェアボタンを押したときに出る3種類のメッセージ(成功/失敗/非対応ブラウザ)
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(url).then(function () {
             showFeedback("コピったで〜");
