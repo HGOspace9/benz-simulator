@@ -853,14 +853,15 @@
             style="background:var(--invest-2)"></span>運用益</span>
       </div>
 
-      <!-- タバコの箱数換算: 左=今まで買った箱数、右=買えてたかもしれない箱数、中央に増加率 -->
+      <!-- タバコの箱数換算: 左=今まで買った箱数、右=買えてたかもしれない箱数、中央に増えた箱数の差 -->
       <div class="invest-box-compare">
         <div class="invest-box-stat">
           <span class="invest-box-value" id="investActualBoxes">0箱</span>
           <span class="invest-box-label">今まで買った</span>
         </div>
         <div class="invest-box-center">
-          <span class="invest-box-big" id="investGrowthBig">0%</span>
+          <span class="invest-box-big" id="investGrowthBig">0箱</span>
+          <span class="invest-box-label">増えた分</span>
         </div>
         <div class="invest-box-stat">
           <span class="invest-box-value" id="investBuyableBoxes">0箱</span>
@@ -1232,13 +1233,9 @@
         investActualBoxesEl.textContent = YEN.format(Math.round(actualBoxes)) + "箱";
         investBuyableBoxesEl.textContent = YEN.format(Math.round(buyableBoxes)) + "箱";
 
-        // 2倍以上に増えていたら%ではなく「◯倍」表示に切り替える
-        var growthRatio = last.principal > 0 ? last.total / last.principal : 0;
-        if (growthRatio >= 2) {
-          investGrowthBigEl.textContent = growthRatio.toFixed(1) + "倍";
-        } else {
-          investGrowthBigEl.textContent = ((growthRatio - 1) * 100).toFixed(1) + "%";
-        }
+        // %や倍だとわかりにくいので、増えた分を箱数の差で表示する
+        var boxGain = buyableBoxes - actualBoxes;
+        investGrowthBigEl.textContent = YEN.format(Math.round(boxGain)) + "箱";
 
         renderInvestChart(points);
       }
