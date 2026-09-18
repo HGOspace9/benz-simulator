@@ -58,6 +58,14 @@
       --track: #f0ede0;
       --shadow-pop: 5px 5px 0 var(--border);
       --shadow-pop-sm: 3px 3px 0 var(--border);
+      /* dataviz skill: 運用シミュレーション用の2系列カテゴリカル配色。
+         validate_palette.js でライト/ダーク両方 ALL CHECKS PASS を確認済み
+         (#2a78d6×#1baf7a, #3987e5×#199e70)。既存の--accent/--sunは
+         このペアだとFAILしたため専用トークンとして分離 */
+      --invest-1: #2a78d6;
+      /* 元本(タバコ代) */
+      --invest-2: #1baf7a;
+      /* 運用益 */
     }
 
     @media (prefers-color-scheme: dark) {
@@ -77,6 +85,8 @@
         --danger: #e3856b;
         --sun: #ffd873;
         --track: #35322a;
+        --invest-1: #3987e5;
+        --invest-2: #199e70;
       }
     }
 
@@ -96,6 +106,8 @@
       --danger: #e3856b;
       --sun: #ffd873;
       --track: #35322a;
+      --invest-1: #3987e5;
+      --invest-2: #199e70;
     }
 
     * {
@@ -396,6 +408,220 @@
       color: var(--muted);
     }
 
+    /* ============ 運用シミュレーション(dataviz skill準拠のエリアチャート) ============ */
+    .invest-lead {
+      text-align: center;
+      color: var(--ink-2);
+      font-size: 13px;
+      margin: 0 0 16px;
+    }
+
+    #investRateField label {
+      justify-content: center;
+      gap: 8px;
+    }
+
+    #investRateField input[type="number"] {
+      max-width: 160px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .invest-headline {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      margin: 18px 0 6px;
+      flex-wrap: wrap;
+    }
+
+    .invest-stat {
+      text-align: center;
+    }
+
+    .invest-stat-label {
+      display: block;
+      font-size: 12px;
+      color: var(--ink-2);
+      margin-bottom: 2px;
+    }
+
+    .invest-stat-value {
+      display: block;
+      font-family: "Kiwi Maru", sans-serif;
+      font-size: clamp(20px, 5vw, 28px);
+      font-variant-numeric: tabular-nums;
+      color: var(--invest-1);
+    }
+
+    .invest-stat--total .invest-stat-value {
+      color: var(--invest-2);
+    }
+
+    .invest-gain {
+      text-align: center;
+      font-size: 13px;
+      color: var(--ink-2);
+      margin: 0 0 12px;
+    }
+
+    .invest-gain strong {
+      color: var(--invest-2);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .invest-chart-wrap {
+      position: relative;
+      margin: 8px 0 4px;
+    }
+
+    #investChart {
+      width: 100%;
+      height: auto;
+      display: block;
+      overflow: visible;
+    }
+
+    #investChart text {
+      font-family: "Zen Maru Gothic", sans-serif;
+      fill: var(--muted);
+    }
+
+    .invest-crosshair {
+      stroke: var(--ink-2);
+      stroke-width: 1;
+      stroke-dasharray: 3 3;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .invest-hit-layer {
+      fill: transparent;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .invest-tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 12px;
+      box-shadow: var(--shadow-pop-sm);
+      white-space: nowrap;
+      z-index: 5;
+    }
+
+    .invest-tooltip .invest-tooltip-year {
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--ink);
+    }
+
+    .invest-tooltip .invest-tooltip-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--ink-2);
+    }
+
+    .invest-tooltip .invest-tooltip-row .invest-tooltip-key {
+      display: inline-block;
+      width: 10px;
+      height: 2px;
+    }
+
+    .invest-tooltip .invest-tooltip-row strong {
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .invest-legend {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 10px 0 4px;
+      font-size: 12px;
+      color: var(--ink-2);
+    }
+
+    .invest-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .invest-legend-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .invest-table-toggle {
+      display: block;
+      margin: 10px auto 0;
+      border: 2px solid var(--border);
+      background: var(--surface-2);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .invest-table-wrap {
+      margin-top: 14px;
+      max-height: 240px;
+      overflow-y: auto;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .invest-table-wrap table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .invest-table-wrap th,
+    .invest-table-wrap td {
+      padding: 6px 10px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .invest-table-wrap th:first-child,
+    .invest-table-wrap td:first-child {
+      text-align: left;
+    }
+
+    .invest-table-wrap thead th {
+      position: sticky;
+      top: 0;
+      background: var(--surface-2);
+      color: var(--ink-2);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     /* ============ 等価アイテムリスト(散らばったステッカー風) ============ */
     .item-grid {
       display: grid;
@@ -611,6 +837,79 @@
       <p class="benz-note">※メルセデス・ベンツAクラス だいたい¥5,500,000として計算(グレードとか時期でちょいちょい変わるから参考程度に)</p>
     </section>
 
+    <!-- ============ 運用シミュレーション ============ -->
+    <section class="card invest-block" aria-label="運用シミュレーション">
+      <!-- # 編集ポイント: 運用シミュレーションの見出し -->
+      <h2 style="text-align:center">この金額を運用していたら得ていた金額</h2>
+      <!-- # 編集ポイント: 運用シミュレーションの説明文 -->
+      <p class="invest-lead">タバコの代わりに毎日オルカン(全世界株式インデックス)に入れてたら…</p>
+
+      <div class="field" id="investRateField">
+        <label for="investRate">年利(%)<span class="pill-badge" id="investRateBadge">目安 年6%</span></label>
+        <input type="number" id="investRate" name="investRate" min="0" max="30" step="0.1" value="6"
+          autocomplete="off">
+      </div>
+
+      <div class="invest-headline">
+        <div class="invest-stat">
+          <span class="invest-stat-label">元本(タバコ代)</span>
+          <span class="invest-stat-value" id="investPrincipal">¥0</span>
+        </div>
+        <div class="invest-stat invest-stat--total">
+          <span class="invest-stat-label">運用してたら</span>
+          <span class="invest-stat-value" id="investTotal">¥0</span>
+        </div>
+      </div>
+      <p class="invest-gain">運用益ぶんは <strong id="investGain">¥0</strong> 増えてた計算</p>
+
+      <div class="invest-chart-wrap">
+        <svg id="investChart" viewBox="0 0 640 260" preserveAspectRatio="none" role="img"
+          aria-labelledby="investChartTitle">
+          <title id="investChartTitle">経過年数ごとの元本と運用後資産の推移</title>
+          <g id="investGrid"></g>
+          <path id="investPrincipalArea" fill="var(--invest-1)" fill-opacity="0.14" stroke="none"></path>
+          <path id="investGrowthArea" fill="var(--invest-2)" fill-opacity="0.16" stroke="none"></path>
+          <path id="investPrincipalLine" fill="none" stroke="var(--invest-1)" stroke-width="2"
+            stroke-linejoin="round" stroke-linecap="round"></path>
+          <path id="investTotalLine" fill="none" stroke="var(--invest-2)" stroke-width="2" stroke-linejoin="round"
+            stroke-linecap="round"></path>
+          <g id="investXAxis"></g>
+          <line id="investCrosshair" class="invest-crosshair" x1="0" y1="0" x2="0" y2="0"></line>
+          <text id="investEndLabel" font-size="13" font-weight="700"></text>
+          <rect id="investHitLayer" class="invest-hit-layer" x="0" y="0" width="640" height="260"></rect>
+        </svg>
+        <div class="invest-tooltip" id="investTooltip" hidden></div>
+      </div>
+
+      <div class="invest-legend">
+        <span class="invest-legend-item"><span class="invest-legend-swatch"
+            style="background:var(--invest-1)"></span>元本(タバコ代)</span>
+        <span class="invest-legend-item"><span class="invest-legend-swatch"
+            style="background:var(--invest-2)"></span>運用益</span>
+      </div>
+
+      <button class="invest-table-toggle" id="investTableToggle" type="button" aria-expanded="false"
+        aria-controls="investTable">表で見る</button>
+      <div id="investTable" class="invest-table-wrap" hidden>
+        <table>
+          <caption class="sr-only">年ごとの元本と運用後資産額の推移</caption>
+          <thead>
+            <tr>
+              <th scope="col">年後</th>
+              <th scope="col">元本</th>
+              <th scope="col">運用後の資産</th>
+            </tr>
+          </thead>
+          <tbody id="investTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- # 編集ポイント: 運用シミュレーションの注意書き(投資は自己責任の旨) -->
+      <p class="benz-note">※年率<span id="investRateNote">6</span>%で複利運用したと仮定した簡易シミュレーションです。手数料・税金は考慮していません。オルカン(eMAXIS
+        Slim
+        全世界株式)の実績は過去20年平均で年率約10%という調査もありますが、6%はやや控えめに見た前提です。将来の運用成果を保証するものではなく、相場状況によって元本を下回ることもあります。投資勧誘を目的としたものではありません。</p>
+    </section>
+
     <!-- ============ 等価アイテムリスト ============ -->
     <section class="card" aria-label="他の換算アイテム">
       <!-- # 編集ポイント: アイテムリストの見出し(中のアイテムはJS側のITEMSを検索) -->
@@ -690,6 +989,27 @@
 
       var benzPercentEl = document.getElementById("benzPercent");
       var benzProgressEl = document.getElementById("benzProgress");
+
+      // ============ 運用シミュレーション用の要素参照 ============
+      var investRateEl = document.getElementById("investRate");
+      var investPrincipalEl = document.getElementById("investPrincipal");
+      var investTotalEl = document.getElementById("investTotal");
+      var investGainEl = document.getElementById("investGain");
+      var investRateNoteEl = document.getElementById("investRateNote");
+      var investTableToggle = document.getElementById("investTableToggle");
+      var investTableWrap = document.getElementById("investTable");
+      var investTableBody = document.getElementById("investTableBody");
+      var investChartSvg = document.getElementById("investChart");
+      var investGrid = document.getElementById("investGrid");
+      var investPrincipalArea = document.getElementById("investPrincipalArea");
+      var investGrowthArea = document.getElementById("investGrowthArea");
+      var investPrincipalLine = document.getElementById("investPrincipalLine");
+      var investTotalLine = document.getElementById("investTotalLine");
+      var investXAxis = document.getElementById("investXAxis");
+      var investCrosshair = document.getElementById("investCrosshair");
+      var investEndLabel = document.getElementById("investEndLabel");
+      var investHitLayer = document.getElementById("investHitLayer");
+      var investTooltip = document.getElementById("investTooltip");
 
       var itemGridEl = document.getElementById("itemGrid");
       var pricePerPackField = document.getElementById("pricePerPackField");
@@ -787,6 +1107,273 @@
         });
       }
 
+      // ============ dataviz skill: 運用シミュレーションのチャート描画 ============
+      var SVG_NS = "http://www.w3.org/2000/svg";
+      var investPadding = { top: 16, right: 16, bottom: 28, left: 56 };
+      var investChartW = 640;
+      var investChartH = 260;
+      var investLastPoints = [];
+
+      // 毎日一定額を積み立てた場合の元本・運用後資産を年ごとに計算(複利・日次換算)
+      function calcInvestSeries(dailyCost, years, annualRatePercent) {
+        var rAnnual = Math.max(0, Number(annualRatePercent) || 0) / 100;
+        var rDaily = Math.pow(1 + rAnnual, 1 / 365) - 1;
+        var maxYears = Math.max(1, Math.round(years));
+        var points = [];
+
+        for (var y = 0; y <= maxYears; y++) {
+          var nDays = Math.round(y * 365);
+          var principal = dailyCost * nDays;
+          var total = rDaily === 0
+            ? principal
+            : dailyCost * ((Math.pow(1 + rDaily, nDays) - 1) / rDaily);
+          points.push({ year: y, principal: principal, total: total });
+        }
+        return points;
+      }
+
+      // 軸目盛り用に「きりのいい上限値」を求める(1/2/5刻み)
+      function niceMax(value) {
+        if (value <= 0) return 1;
+        var exponent = Math.floor(Math.log(value) / Math.LN10);
+        var magnitude = Math.pow(10, exponent);
+        var fraction = value / magnitude;
+        var niceFraction = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 5 ? 5 : 10;
+        return niceFraction * magnitude;
+      }
+
+      function investX(index, count) {
+        var plotW = investChartW - investPadding.left - investPadding.right;
+        return investPadding.left + (count <= 1 ? 0 : (plotW * index) / (count - 1));
+      }
+
+      function investY(value, maxVal) {
+        var plotH = investChartH - investPadding.top - investPadding.bottom;
+        var ratio = maxVal === 0 ? 0 : value / maxVal;
+        return investPadding.top + plotH * (1 - ratio);
+      }
+
+      function buildAreaPath(points, maxVal, valueKey, baselineKey) {
+        var count = points.length;
+        var top = points.map(function (p, i) {
+          return investX(i, count) + "," + investY(p[valueKey], maxVal);
+        });
+        var bottom = points.slice().reverse().map(function (p, i) {
+          var idx = count - 1 - i;
+          var base = baselineKey ? p[baselineKey] : 0;
+          return investX(idx, count) + "," + investY(base, maxVal);
+        });
+        return "M" + top.join(" L") + " L" + bottom.join(" L") + " Z";
+      }
+
+      function buildLinePath(points, maxVal, valueKey) {
+        var count = points.length;
+        return points.map(function (p, i) {
+          return (i === 0 ? "M" : "L") + investX(i, count) + "," + investY(p[valueKey], maxVal);
+        }).join(" ");
+      }
+
+      function formatManEn(yen) {
+        return YEN.format(Math.round(yen / 10000));
+      }
+
+      function renderInvestChart(points) {
+        var count = points.length;
+        var maxVal = niceMax(points[count - 1].total);
+
+        investPrincipalArea.setAttribute("d", buildAreaPath(points, maxVal, "principal", null));
+        investGrowthArea.setAttribute("d", buildAreaPath(points, maxVal, "total", "principal"));
+        investPrincipalLine.setAttribute("d", buildLinePath(points, maxVal, "principal"));
+        investTotalLine.setAttribute("d", buildLinePath(points, maxVal, "total"));
+
+        // 横グリッド線(0/25/50/75/100%)+ y軸ラベル(万円単位)
+        investGrid.innerHTML = "";
+        var steps = 4;
+        for (var s = 0; s <= steps; s++) {
+          var val = (maxVal * s) / steps;
+          var gy = investY(val, maxVal);
+
+          var line = document.createElementNS(SVG_NS, "line");
+          line.setAttribute("x1", String(investPadding.left));
+          line.setAttribute("x2", String(investChartW - investPadding.right));
+          line.setAttribute("y1", String(gy));
+          line.setAttribute("y2", String(gy));
+          line.setAttribute("stroke", "var(--border)");
+          line.setAttribute("stroke-width", "1");
+          line.setAttribute("opacity", "0.5");
+          investGrid.appendChild(line);
+
+          var label = document.createElementNS(SVG_NS, "text");
+          label.setAttribute("x", String(investPadding.left - 8));
+          label.setAttribute("y", String(gy + 4));
+          label.setAttribute("text-anchor", "end");
+          label.setAttribute("font-size", "13");
+          label.textContent = formatManEn(val) + "万";
+          investGrid.appendChild(label);
+        }
+
+        // x軸(年数)ラベル。狭い画面でも読めるよう常に5〜6本程度に間引く。
+        // 最後のラベルと直前のラベルが近すぎて重なる場合は直前側を間引いた側に譲る
+        investXAxis.innerHTML = "";
+        var labelEvery = Math.max(1, Math.ceil((count - 1) / 5));
+        var labelIndices = [];
+        for (var li = 0; li < count; li += labelEvery) labelIndices.push(li);
+        var lastIdx = count - 1;
+        var lastShown = labelIndices[labelIndices.length - 1];
+        if (lastShown !== lastIdx) {
+          if (lastIdx - lastShown < labelEvery / 2) {
+            labelIndices[labelIndices.length - 1] = lastIdx;
+          } else {
+            labelIndices.push(lastIdx);
+          }
+        }
+        labelIndices.forEach(function (i) {
+          var p = points[i];
+          var text = document.createElementNS(SVG_NS, "text");
+          text.setAttribute("x", String(investX(i, count)));
+          text.setAttribute("y", String(investChartH - investPadding.bottom + 18));
+          text.setAttribute("text-anchor", "middle");
+          text.setAttribute("font-size", "13");
+          text.textContent = p.year + "年後";
+          investXAxis.appendChild(text);
+        });
+
+        // 折れ線の右端に合計額を直接ラベル表示(marks-and-anatomy: Lines -> value at the end)
+        var lastPoint = points[count - 1];
+        var endX = investX(count - 1, count);
+        var endY = investY(lastPoint.total, maxVal);
+        investEndLabel.setAttribute("x", String(Math.min(endX, investChartW - investPadding.right - 4)));
+        investEndLabel.setAttribute("y", String(Math.max(endY - 10, investPadding.top + 12)));
+        investEndLabel.setAttribute("text-anchor", "end");
+        investEndLabel.setAttribute("fill", "var(--invest-2)");
+        investEndLabel.textContent = "¥" + YEN.format(Math.round(lastPoint.total));
+
+        investCrosshair.setAttribute("y1", String(investPadding.top));
+        investCrosshair.setAttribute("y2", String(investChartH - investPadding.bottom));
+      }
+
+      function renderInvestTable(points) {
+        investTableBody.innerHTML = "";
+        points.forEach(function (p) {
+          var tr = document.createElement("tr");
+
+          var tdYear = document.createElement("td");
+          tdYear.textContent = p.year + "年後";
+
+          var tdPrincipal = document.createElement("td");
+          tdPrincipal.textContent = "¥" + YEN.format(Math.round(p.principal));
+
+          var tdTotal = document.createElement("td");
+          tdTotal.textContent = "¥" + YEN.format(Math.round(p.total));
+
+          tr.appendChild(tdYear);
+          tr.appendChild(tdPrincipal);
+          tr.appendChild(tdTotal);
+          investTableBody.appendChild(tr);
+        });
+      }
+
+      function renderInvest() {
+        var cigsPerDay = Number(cigsPerDayEl.value) || 0;
+        var years = Number(yearsEl.value) || 0;
+        var pricePerPack = Number(pricePerPackEl.value) || 0;
+        var dailyCost = cigsPerDay * (pricePerPack / 20);
+        var rate = Number(investRateEl.value);
+        if (!(rate >= 0)) rate = 0;
+
+        var points = calcInvestSeries(dailyCost, years, rate);
+        investLastPoints = points;
+        var last = points[points.length - 1];
+        var gain = last.total - last.principal;
+
+        investPrincipalEl.textContent = "¥" + YEN.format(Math.round(last.principal));
+        investTotalEl.textContent = "¥" + YEN.format(Math.round(last.total));
+        investGainEl.textContent = "¥" + YEN.format(Math.round(gain));
+        investRateNoteEl.textContent = rate.toString();
+
+        renderInvestChart(points);
+        if (!investTableWrap.hidden) {
+          renderInvestTable(points);
+        }
+      }
+
+      // ホバー/タッチで元本・運用益・合計をツールチップ表示(interaction.md: crosshair + tooltip)
+      function showInvestTooltip(clientX) {
+        if (investLastPoints.length === 0) return;
+        var rect = investChartSvg.getBoundingClientRect();
+        var relX = (clientX - rect.left) / rect.width * investChartW;
+        var count = investLastPoints.length;
+        var plotW = investChartW - investPadding.left - investPadding.right;
+        var ratio = plotW === 0 ? 0 : (relX - investPadding.left) / plotW;
+        var index = Math.round(ratio * (count - 1));
+        index = Math.max(0, Math.min(count - 1, index));
+        var p = investLastPoints[index];
+
+        var cx = investX(index, count);
+        investCrosshair.setAttribute("x1", String(cx));
+        investCrosshair.setAttribute("x2", String(cx));
+        investCrosshair.style.opacity = "1";
+
+        investTooltip.innerHTML = "";
+        var yearRow = document.createElement("div");
+        yearRow.className = "invest-tooltip-year";
+        yearRow.textContent = p.year + "年後";
+        investTooltip.appendChild(yearRow);
+
+        function addRow(label, value, color) {
+          var row = document.createElement("div");
+          row.className = "invest-tooltip-row";
+
+          var key = document.createElement("span");
+          key.className = "invest-tooltip-key";
+          key.style.background = color;
+
+          var strong = document.createElement("strong");
+          strong.textContent = "¥" + YEN.format(Math.round(value));
+
+          row.appendChild(key);
+          row.appendChild(document.createTextNode(label + ": "));
+          row.appendChild(strong);
+          investTooltip.appendChild(row);
+        }
+
+        addRow("元本", p.principal, "var(--invest-1)");
+        addRow("運用後", p.total, "var(--invest-2)");
+
+        investTooltip.hidden = false;
+        var svgRect = investChartSvg.getBoundingClientRect();
+        var wrapRect = investChartSvg.parentElement.getBoundingClientRect();
+        var pxX = svgRect.left - wrapRect.left + (cx / investChartW) * svgRect.width;
+        var tooltipLeft = Math.min(Math.max(pxX + 12, 0), wrapRect.width - 150);
+        investTooltip.style.left = tooltipLeft + "px";
+        investTooltip.style.top = "8px";
+      }
+
+      function hideInvestTooltip() {
+        investCrosshair.style.opacity = "0";
+        investTooltip.hidden = true;
+      }
+
+      investHitLayer.addEventListener("pointermove", function (e) {
+        showInvestTooltip(e.clientX);
+      });
+      investHitLayer.addEventListener("pointerleave", hideInvestTooltip);
+      investHitLayer.addEventListener("pointerdown", function (e) {
+        showInvestTooltip(e.clientX);
+      });
+
+      investTableToggle.addEventListener("click", function () {
+        var willShow = investTableWrap.hidden;
+        investTableWrap.hidden = !willShow;
+        investTableToggle.setAttribute("aria-expanded", String(willShow));
+        investTableToggle.textContent = willShow ? "グラフに戻る" : "表で見る";
+        if (willShow) {
+          renderInvestTable(investLastPoints);
+        }
+      });
+
+      investRateEl.addEventListener("input", renderInvest);
+
       function render() {
         // taste-skill Rule 5: Error States — 0円以下の入力はインラインで警告する
         var pricePerPackValue = Number(pricePerPackEl.value);
@@ -808,6 +1395,7 @@
         benzProgressEl.style.width = Math.min(100, benzPercent).toFixed(1) + "%";
 
         renderItems(result.totalYen);
+        renderInvest();
         syncUrl();
       }
 
